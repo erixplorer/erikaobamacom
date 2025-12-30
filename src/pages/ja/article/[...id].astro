@@ -1,0 +1,24 @@
+---
+import { getCollection, render } from 'astro:content';
+import MarkdownPostLayout from '../../../layouts/MarkdownPostLayout.astro';
+import NavPrevNext from '../../../components/collections/article/NavPrevNextJa.astro';
+
+export async function getStaticPaths() {
+  const blogEntries = await getCollection('articleJa');
+  return blogEntries.map(entry => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+export const prerender = true;
+---
+
+<MarkdownPostLayout frontmatter={entry.data}>
+  <Content />
+  <NavPrevNext />
+</MarkdownPostLayout>
+

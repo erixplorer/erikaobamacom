@@ -1,0 +1,47 @@
+---
+import { Icon } from 'astro-icon/components'
+import ColorScheme from '../parts/ColorScheme.astro';
+import contactGeneralEn from './contactGeneralEn.txt?raw';
+import contactGeneralJa from './contactGeneralJa.txt?raw';
+const pathName = Astro.url.pathname.replace(`/ja/`, '/');
+---
+
+<div class={pathName === ('/') ? `nav-links bg-gradient` : `nav-links`}>
+    <a href={ Astro.currentLocale === "ja" ? `/ja/about/` : `/about`}>About</a>
+    <a href={ Astro.currentLocale === "ja" ? `/ja/article/` : `/article`}>Article</a>
+    <a href={ Astro.currentLocale === "ja" ? `/ja/portfolio/` : `/portfolio`}>Portfolio</a>
+    <a href={ Astro.currentLocale === "ja" ? `${contactGeneralJa}` : `${contactGeneralEn}`} target="_blank">Contact</a>
+    
+    <a href={ Astro.currentLocale === "ja" ? `/ja/search/` : `/search/` } class="nav-mobile font-sm">Search</a>
+    
+    { Astro.currentLocale === "en" && pathName.startsWith('/article/tags')
+        ?
+        <a href={`/ja/article/tags`} class="lang">[ 日本語 ]</a>
+        :
+        Astro.currentLocale === "en" && pathName.startsWith('/portfolio/tags')
+        ?
+        <a href={`/ja/portfolio/tags`} class="lang">[ 日本語 ]</a>
+        :
+        Astro.currentLocale === "ja" && pathName.startsWith('/article/tags')
+        ?
+        <a href={`/article/tags`} class="lang">[ English ]</a>
+        :
+        Astro.currentLocale === "ja" && pathName.startsWith('/portfolio/tags')
+        ?
+        <a href={`/portfolio/tags`} class="lang">[ English ]</a>
+        :
+        Astro.currentLocale === "en"
+        ?
+        <a href={`/ja${pathName}`} class="lang">[ 日本語 ]</a>
+        :
+        Astro.currentLocale === "ja"
+        ?
+        <a href={`${pathName}`} class="lang">[ English ]</a>
+        :
+        ``
+    }
+    <a href={ Astro.currentLocale === "ja" ? `/ja/search/` : `/search/` } class="nav-desktop"><Icon name="tabler:search" /></a>
+
+    <ColorScheme />
+
+</div>

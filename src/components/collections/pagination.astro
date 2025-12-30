@@ -1,0 +1,17 @@
+---
+const { currentPage, firstUrl, prevUrl, nextUrl, lastUrl } = Astro.props;
+---
+
+<nav class="pagination">
+  <ul>
+ <li>{firstUrl != `undefined` ? <a href={firstUrl}>&#171;</a> : <a class="transparent">&#171;</a>}</li>
+  <li>{prevUrl != `undefined` ? <a href={prevUrl}>&#8249;</a> : <a class="transparent">&#8249;</a>}</li>
+  <li class="current-page">{currentPage}</li>
+  <li>{nextUrl != `undefined` ? <a href={nextUrl}>&#8250;</a> : <a class="transparent">&#8250;</a>}</li>
+  <li>{lastUrl != `undefined` ? <a href={lastUrl}>&#187;</a> : <a class="transparent">&#187;</a>}</li>
+  </ul>
+</nav>
+
+<style>
+
+</style>

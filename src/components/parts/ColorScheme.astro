@@ -1,0 +1,37 @@
+---
+import { Icon } from 'astro-icon/components'
+---
+
+<div id="color-scheme">
+<Icon name="tabler:contrast-filled" /> 
+<select id="colorScheme">
+  <option value="system">System</option>
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+</select>
+</div>
+
+<script>
+  const select = document.getElementById("colorScheme") as HTMLSelectElement;
+  const theme = localStorage.getItem("data-theme");
+  const systemTheme = "system";
+
+  if (theme !== null) {
+    select.value = theme;
+  } else {
+    select.value = systemTheme;
+  }
+
+  function updateTheme(value) {
+    const theme = value;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('data-theme', value);
+  }
+
+  select.addEventListener("change", (event: Event) => {
+    const select = event.target as HTMLSelectElement;
+    document.body.classList.add('bgfade');
+    updateTheme(select.value);
+  });
+  
+</script>

@@ -1,0 +1,53 @@
+---
+const pageTitle = "Portfolio";
+
+import type { Page } from "astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import ArticlePost from "../../components/collections/ArticlePost.astro";
+import Pagination from "../../components/collections/pagination.astro";
+
+type Props = {
+  page: Page<any>;
+};
+
+export async function getStaticPaths({ paginate }: any) {
+  const blogEntries = (await getCollection("portfolio"))
+    .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(blogEntries, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+export const prerender = true;
+
+---
+
+<BaseLayout pageTitle={pageTitle}>
+	<div class="wrapper animate-fade">
+		<ul class="article-list">
+ {((page as any).data || []).map((blogPostEntry: any) => (
+
+	<ArticlePost
+							url={`/portfolio/${blogPostEntry.id}`}
+							title={blogPostEntry.data.title}
+							description={blogPostEntry.data.description}
+							image={blogPostEntry.data.image}
+							tags={blogPostEntry.data.tags}
+						/>
+        ))}
+		
+		</ul>
+
+    <Pagination
+      length={`${page.url.last}`} 
+      currentPage={`${page.currentPage}`}
+      firstUrl={`${page.url.first}`}
+      prevUrl={`${page.url.prev}`}
+      nextUrl={`${page.url.next}`}
+      lastUrl={`${page.url.last}`}
+    />
+
+
+
+	</div>
+</BaseLayout>

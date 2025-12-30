@@ -1,26 +1,50 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 
 import preact from '@astrojs/preact';
 import tailwind from '@astrojs/tailwind';
+import pagefind from "astro-pagefind";
+import icon from "astro-icon";
+import mdx from "@astrojs/mdx";
 
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
-  integrations: [preact(), tailwind()],
+  integrations: [
+    preact(), 
+    tailwind(), 
+    pagefind(), 
+    icon({
+      iconDir: "src/images/icon",
+    }), 
+    mdx({
+      // `syntaxHighlight` inherited from Markdown
+
+      // Markdown `remarkPlugins` ignored,
+      // only `remarkPlugin2` applied.
+      // remarkPlugins: [remarkPlugin2],
+      // `gfm` overridden to `false`
+      // gfm: false,
+    }),
+  ],
   i18n: {
     locales: ["en", "ja"],
     defaultLocale: "en",
-      routing: {
-        prefixDefaultLocale: false,
+    routing: {
+      prefixDefaultLocale: false,
+      redirectToDefaultLocale: true,
+      fallbackType: "redirect",
+    },
+    fallback: {
+      ja: "en",
     }
   },
-    markdown: {
+  markdown: {
     shikiConfig: {
       themes: {
-        light: 'catppuccin-latte',
-        dark: 'catppuccin-frappe',
+        light: 'catppuccin-frappe',
+        dark: 'catppuccin-macchiato',
       },
     },
-  },
+  }
 });

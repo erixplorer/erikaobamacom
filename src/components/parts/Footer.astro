@@ -1,0 +1,46 @@
+---
+import contactGeneralEn from '../navigation/contactGeneralEn.txt?raw';
+import contactGeneralJa from '../navigation/contactGeneralJa.txt?raw';
+import contactBusinessEn from '../navigation/contactBusinessEn.txt?raw';
+import contactBusinessJa from '../navigation/contactBusinessJa.txt?raw';
+import socialYouTube from '../navigation/socialYouTube.txt?raw';
+import socialFigma from '../navigation/socialFigma.txt?raw';
+import socialGitHub from '../navigation/socialGitHub.txt?raw';
+
+---
+<footer>
+
+  <nav class="nav-footer wrapper">
+    <ul>Contents
+      <li><a href={ Astro.currentLocale === "ja" ? `/ja/about/` : `/about`}>About</a></li>
+      <li><a href={ Astro.currentLocale === "ja" ? `/ja/article/` : `/article`}>Article</a></li>
+      <li><a href={ Astro.currentLocale === "ja" ? `/ja/portfolio/` : `/portfolio`}>Portfolio</a></li>
+      <li>{ Astro.currentLocale === "ja" ? 
+       <a href="/ja/workflow">制作フロー</a>
+       : 
+       <a href="/workflow">Workflow</a>
+       }</li>
+    </ul>
+    
+    <ul>Contact
+      <li>{ Astro.currentLocale === "ja" ? 
+       <a href={contactGeneralJa} target="_blank">メールフォーム</a>
+       : 
+       <a href={contactGeneralEn} target="_blank">General message</a>
+       }</li>
+      <li>{ Astro.currentLocale === "ja" ? 
+       <a href={contactBusinessJa} target="_blank">ご依頼用フォーム</a>
+       : 
+       <a href={contactBusinessEn} target="_blank">Business inquiry</a>
+       }</li>
+    </ul>
+
+    <ul>Social
+      <li><a href={socialYouTube} target="_blank">YouTube</a></li>
+      <!-- <li><a href={socialFigma} target="_blank">Figma</a></li> -->
+      <li><a href={socialGitHub} target="_blank">GitHub</a></li>
+    </ul>
+
+  </nav>
+  <p class="copyright">&copy; {new Date().getFullYear()} Erika Obama</p>
+</footer>

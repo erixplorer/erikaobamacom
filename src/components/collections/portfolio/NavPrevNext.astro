@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('portfolio'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+const currentPostIndex = posts.findIndex((post) => post.id == Astro.params.id);
+const previousPost = currentPostIndex + 1 === posts.length ? undefined : posts[currentPostIndex + 1];
+const nextPost = currentPostIndex === 0 ? undefined : posts[currentPostIndex - 1];
+---
+
+{
+  (previousPost || nextPost) && (
+    <nav class="prev-next">
+      { nextPost && ( <p class="next"><span>&#8249;</span><a href={`/portfolio/${nextPost.id}/`}>{nextPost.data.title}</a></p> ) }
+      { previousPost && ( <p class="prev"><a href={`/portfolio/${previousPost.id}/`}>{previousPost.data.title}</a><span>&#8250;</span></p> ) }
+    </nav>
+  )
+}

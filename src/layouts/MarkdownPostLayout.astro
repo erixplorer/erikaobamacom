@@ -2,33 +2,25 @@
 import BaseLayout from './BaseLayout.astro';
 const { frontmatter } = Astro.props;
 ---
+
 <BaseLayout pageTitle={frontmatter.title} pageCategory={frontmatter.category} pageDescription={frontmatter.description} pageImageUrl={frontmatter.image.url} pageImageAlt={frontmatter.image.alt}>
-  <p class="intersect fade-right intersect-once"><em>{frontmatter.description}</em></p>
+  <article class="article wrapper animate-fade">
+    <div id="article-info" class="intersect intersect-once">
+      <p class="description"><em>{frontmatter.description}</em></p>
+      <p>
+        <span class="caption"><!-- Published on: -->{frontmatter.pubDate.toString().slice(0,10)}</span>
+      <div class="tags">
+        {frontmatter.tags.map((tag: string) => (
+          <span class="tag"><a href={ Astro.currentLocale === "ja" ? `/ja/article/tags/${tag}` : `/article/tags/${tag}`}>#{tag}</a></span>
+        ))}
+        </p>
+      </div>
+    </div>
 
-<div class="tags -mt-3 mb-14 intersect fade-right intersect-once">
-  <span class="text-sm mr-2"><!-- Published on: -->{frontmatter.pubDate.toString().slice(0,10)}</span>
-  {frontmatter.tags.map((tag: string) => (
-    <span class="tag"><a href={ Astro.currentLocale === "ja" ? `/ja/tags/${tag}` : `/tags/${tag}`}>#{tag}</a></span>
-  ))}
-</div>
+    { frontmatter.image.hero === true ? 
+      <img src={frontmatter.image.url} alt={frontmatter.image.alt} class="heroimage"/>
+      : null }
 
-{ frontmatter.image.hero === "yes" ? 
-    <img src={frontmatter.image.url} alt={frontmatter.image.alt} class="heroimage intersect fade-down intersect-once"/>
-    : `` }
-
-<slot />
-    
+    <slot />
+  </article>
 </BaseLayout>
-
-
-<style>
-  .heroimage {
-    @apply
-    mb-7
-  }
-  .heroimage + p {
-      @apply
-      animate-fade-down 
-      animate-once 
-  }
-</style>

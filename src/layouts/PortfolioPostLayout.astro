@@ -1,0 +1,38 @@
+---
+import BaseLayout from './BaseLayout.astro';
+const { frontmatter } = Astro.props;
+---
+
+<BaseLayout pageTitle={frontmatter.title} pageCategory={frontmatter.category} pageDescription={frontmatter.description} pageImageUrl={frontmatter.image.url} pageImageAlt={frontmatter.image.alt}>
+  <article class="article wrapper animate-fade">
+    <div id="article-info" class="intersect intersect-once">
+      <p class="description"><em>{frontmatter.description}</em></p>
+        
+      <ul class="project-info">
+        { frontmatter.projDate ? 
+          <li>{ Astro.currentLocale === "ja" ? `制作年` : `Project year`}: {frontmatter.projDate}</li>
+        : null }
+        { frontmatter.client ? 
+          <li>{ Astro.currentLocale === "ja" ? `クライアント` : `Client`}: {frontmatter.client}</li>
+        : null }
+      </ul>
+      <div class="tags">
+        {frontmatter.tags.map((tag: string) => (
+          <span class="tag"><a href={ Astro.currentLocale === "ja" ? `/ja/portfolio/tags/${tag}` : `/portfolio/tags/${tag}`}>#{tag}</a></span>
+        ))}
+      </div>
+    </div>
+
+    { frontmatter.image.hero === true ? 
+      <img src={frontmatter.image.url} alt={frontmatter.image.alt} class="heroimage"/>
+      : null }
+
+    <slot />
+  </article>
+</BaseLayout>
+
+<style>
+  #article-info {
+    row-gap: var(--m-2xs);
+  }
+</style>

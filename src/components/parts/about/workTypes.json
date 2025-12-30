@@ -1,0 +1,42 @@
+[
+    {
+        "type": "Web design/development",
+        "typeJa": "Webデザイン・開発",
+        "icon": "code",
+        "iconJa": "code",
+        "description": "Website/landing page design, front-end coding",
+        "descriptionJa": "Webサイト・LPデザイン、フロントエンド開発等",
+        "items": [
+            {"item":"Website", "price":"173,600", "priceTaxIn":"190,960", "notice":"* 5-page WordPress website",
+            "itemJa":"Webサイト", "noticeJa":"※5ページ編成のWordPressサイトの場合"},
+            {"item":"Landing page", "price":"123,200", "priceTaxIn":"135,520", "notice":"",
+            "itemJa":"LP（ランディングページ）", "noticeJa":""}
+        ]
+    },
+    {
+        "type": "Graphic design",
+        "typeJa": "グラフィックデザイン",
+        "icon": "gd-en",
+        "iconJa": "gd-ja",
+        "description": "Logo, flyer/poster, social media images",
+        "descriptionJa": "ロゴ、フライヤー、ポスター、SNS用画像等",
+        "items": [
+            {"item":"Logo", "price":"80,000", "priceTaxIn":"88,000", "notice":"* Colored, B/W, and responsive",
+            "itemJa":"ロゴ", "noticeJa":"※カラー、モノクロ、レスポンシブロゴ一式の場合"},
+            {"item":"Logo", "price":"49,600", "priceTaxIn":"54,560", "notice":"* A4 size, double sided",
+            "itemJa":"フライヤー", "noticeJa":"※A4サイズ両面の場合"}
+        ]
+    },
+    {
+        "type": "Motion graphics",
+        "typeJa": "モーショングラフィックス",
+        "icon": "mo-graph",
+        "iconJa": "mo-graph",
+        "description": "Animated explainer, YouTube video editing",
+        "descriptionJa": "説明動画アニメーション、YouTube動画編集等",
+        "items": [
+            {"item":"Explainer", "price":"108,000", "priceTaxIn":"118,800", "notice":"* 5 min video with provided assets",
+            "itemJa":"説明動画", "noticeJa":"※長さ5分、制作素材を全てご提供いただいた場合"}
+        ]
+    }
+]

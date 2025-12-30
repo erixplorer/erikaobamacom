@@ -1,0 +1,10 @@
+---
+const { title, url, image } = Astro.props;
+---
+
+<li class="list-item image-grid">
+    <div class="postinfo image">
+        <a href=`${url}`><img src={image.url} /><span class="article-title">{title}</span></a>
+        </div>
+    </div>
+</li>

@@ -1,0 +1,30 @@
+---
+const { title, url, image, tags, description } = Astro.props;
+const pathName = Astro.url.pathname;
+---
+
+<li class="list-item">
+    <div class="image">
+        <a href=`${url}`><img src={image.url} /></a>
+    </div>
+    <div class="postinfo">
+        <a href=`${url}` class="article-title">{title}</a>
+        <div class="tags">{tags.map((tag) => (
+            <span class="tag">
+                <a href={
+                    pathName.startsWith('/portfolio/tags') ? `${tag}` :
+                    pathName.startsWith('/portfolio') ? `/portfolio/tags/${tag}` :
+                    pathName.startsWith('/ja/portfolio/tags') ? `${tag}` :
+                    pathName.startsWith('/ja/portfolio') ? `/ja/portfolio/tags/${tag}` :
+                    pathName.startsWith('/article/tags') ? `${tag}` :
+                    pathName.startsWith('/article') ? `/article/tags/${tag}` :
+                    pathName.startsWith('/ja/article/tags') ? `${tag}` :
+                    pathName.startsWith('/ja/article') ? `/ja/article/tags/${tag}` :
+                    pathName.startsWith('/') ? `/article/tags/${tag}` :
+                    pathName.startsWith('/ja') ? `/ja/article/tags/${tag}` :
+                 null}>#{tag}</a>
+            </span>
+        ))}</div>
+        {description}
+    </div>
+</li>

@@ -1,0 +1,47 @@
+---
+import workTypes from './workTypes.json';
+import { Icon } from 'astro-icon/components'
+
+const pathName = Astro.url.pathname.replace(`/ja/`, '/');
+---
+
+
+<div class="work-type flex-container">
+    {workTypes.map((worktype) => { return (
+        <div class="box">
+            <div class="box-content">
+                <div class="box-image icon">
+                    { Astro.currentLocale === "ja" ? 
+                    <Icon name=`${worktype.iconJa}` class="svgicon" />
+                    :
+                    <Icon name=`${worktype.icon}` class="svgicon"  />
+                    }
+                </div>
+                <div class="info">
+                    <p class="type">{ Astro.currentLocale === "ja" ? `${worktype.typeJa}` : `${worktype.type}` }</p>
+                    {pathName.startsWith('/about') ?
+                    <div class="price">
+                        {worktype.items.map((item) => (
+                            <p class="workitems">{ Astro.currentLocale === "ja" ? 
+                                <span>{item.itemJa} : ¥{item.price}～</span><br/>
+                                <span class="caption">（税込 ¥{item.priceTaxIn}～）</span>
+                                :
+                                <span>{item.item} : from ¥{item.price}</span><br/><span class="caption">(Tax-in: from ¥{item.priceTaxIn})</span>
+                            }
+                                </p>
+                            <p class="caption">{ Astro.currentLocale === "ja" ? 
+                                `${item.noticeJa}`
+                                :
+                                `${item.notice}`
+                            }
+                                </p>
+                        ))}
+                    </div>
+                : 
+                    <p class="description">{ Astro.currentLocale === "ja" ? `${worktype.descriptionJa}` : `${worktype.description}` }</p>
+                }
+                </div>
+            </div>
+        </div>
+    )})}
+</div>

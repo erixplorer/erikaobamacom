@@ -1,0 +1,17 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCollection } from "astro:content";
+
+const pageTitle = "Tag Index";
+const allPosts = await getCollection("articleJa");
+const tags = [...new Set(allPosts.map((post) => post.data.tags).flat())];
+---
+<BaseLayout pageTitle={pageTitle}>
+  <div class="wrapper animate-fade">
+    <ul class="tags">
+      {tags.map((tag) => (
+        <li class="tag"><a href={`/ja/article/tags/${tag}`}>#{tag}</a></li>
+      ))}
+    </ul>
+  </div>
+</BaseLayout>

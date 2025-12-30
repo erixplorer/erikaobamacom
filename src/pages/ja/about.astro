@@ -1,20 +1,117 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import SkillSet from '../../components/SkillSet.astro';
-import Timeline from '../../components/Timeline.astro';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Location from '../../components/navigation/Location.astro';
+import WorkTypes from "../../components/parts/about/WorkTypes.astro";
+import { Icon } from 'astro-icon/components'
+import { getCollection } from 'astro:content';
+import PostListHorizontal from '../../components/collections/PostListHorizontal.astro';
+import contactURL from '../../components/navigation/contactBusinessJa.txt?raw';
 
-const pageTitle = "About Erika";
+
+const pageTitle = "About";
+
+const portfolioPosts = (await getCollection('portfolioJa'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0,3);
 ---
 
-
 <BaseLayout pageTitle={pageTitle}>
+  <div class="wrapper animate-fade">
+    <section class="flex-container summary">
+      <div>
+        <p class="intersect intersect-once">
+          オバマエリカは<Location />を拠点に活動しているオールラウンド型デザイナーです。以下のようなことを原動力としています。
+        </p>
+        
+        <div class="work-type flex-container">
+          
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="multi-culture" />
+              </div>
+              <div class="info">
+                <p class="type">多文化的好奇心</p>
+                <p>
+                  東洋（日本）と西洋、両方の観点から物事を考え、明文化されないコンセプトや隠れたニュアンスを見つけることが趣味です。
+                </p>
+              </div>
+            </div>
+          </div>
 
-	<p class="intersect fade-right intersect-once">一言でいうと好奇心旺盛な人間。友人によると、私はほとんど全てのことについてオタク・・・だそうです。<br/>その影響は以下の通り。</p>
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="design-code" />
+              </div>
+              <div class="info">
+                <p class="type">デザイン×コードの協奏</p>
+                <p>
+                  デザインのほかフロントエンド開発も行っているので、両方をミックスする制作が好きです。また、知識を通じてもっとデザイナーとエンジニアを繋ぎたいとも思っています。
+                </p>
+              </div>
+            </div>
+          </div>
 
-	<h2 class="intersect fade-down intersect-once">できること</h2>
-	<SkillSet />
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="equity" />
+              </div>
+                <div class="info">
+              <p class="type">エクイティ（公平性）</p>
+              <p>
+                「多様性やインクルーシブの概念をもっと身近にするには？」というのが、近頃考えているテーマの1つです。
+              </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<h2 class="intersect fade-down intersect-once">経歴</h2>
-	<Timeline />
+    <section>
+      <h2 class="intersect intersect-once">ご提供できること</h2>
 
+      <p>以下は私が承っているお仕事と制作料金の一例です。<br/>
+        ここに記載のない案件をご希望の場合でも、遠慮なくお問い合わせください。<br/>新しいことにはどんどん挑戦したいタイプですので 😊
+      </p>
+      <WorkTypes />
+      <ul class="caption">
+        <strong>ご留意事項</strong> 
+        <li>プロジェクト開始前に、手付金としてお見積り総額の30%をお支払いいただきます。</li>
+        <li>ご依頼主が日本国外居住の場合、税抜価格が適用されます。<br/>（参考：<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6567.htm" target="_blank">No.6567 非居住者に対する役務の提供（国税庁）</a>）</li>
+      </ul>
+      
+      <p class="text-center"><a href={contactURL} target="_blank" class="button bg-ac1 col-bg4">お問い合わせ</a>
+      <span class="caption text-center">
+        制作フローは<a href="/ja/workflow/" class="alink caption">こちら</a>よりご確認いただけます
+      </span>
+      </p>
+    </section>
+
+    <section>
+      <div class="heading-row">
+        <h2>ポートフォリオ</h2>
+        <a href="/ja/portfolio/">もっと見る &rarr;</a>
+      </div>
+      <ul class="article-list horizontal">
+        {portfolioPosts.map((post: any) => <PostListHorizontal url=`/ja/portfolio/${post.data.slug}` title={post.data.title} description={post.data.description}image={post.data.image}  tags={post.data.tags} type={post.data.type} />)}
+      </ul>
+    </section>
+
+  </div>
 </BaseLayout>
+
+<style>
+  .summary .box  {
+    background: transparent;
+  }
+  .summary .box-content {
+    background: transparent;
+  }
+  .summary .box-image {
+    @apply md:m-auto;
+  }
+  
+</style>

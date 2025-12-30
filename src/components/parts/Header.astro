@@ -1,0 +1,13 @@
+---
+import Hamburger from './Hamburger.astro';
+import Navigation from './../navigation/Navigation.astro';
+const pathName = Astro.url.pathname.replace(`/ja/`, '/');
+---
+    
+    <header class={pathName === ('/') ? `bg-gradient` : ``}>
+    <nav class="nav-main">
+        <span class="site-title"><a href={ Astro.currentLocale === "ja" ? `/ja/` : `/`}>Erika Obama</a></span>
+        <Navigation />
+        <Hamburger />
+    </nav>
+</header>

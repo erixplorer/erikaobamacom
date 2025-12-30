@@ -1,22 +1,116 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import SkillSet from '../components/SkillSet.astro';
-import Timeline from '../components/Timeline.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Location from '../components/navigation/Location.astro';
+import WorkTypes from "../components/parts/about/WorkTypes.astro";
+import { Icon } from 'astro-icon/components'
+import { getCollection } from 'astro:content';
+import PostListHorizontal from '../components/collections/PostListHorizontal.astro';
+import contactURL from '../components/navigation/contactBusinessEn.txt?raw';
 
-const pageTitle = "About Erika";
+const pageTitle = "About";
+
+const portfolioPosts = (await getCollection('portfolio'))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0,3);
 ---
 
-
 <BaseLayout pageTitle={pageTitle}>
+  <div class="wrapper animate-fade">
+    <section class="flex-container summary">
+      <div>
+        <p class="intersect intersect-once">
+          I’m Erika, a full-stack designer based in <Location />. I’m driven by:
+        </p>
+        
+        <div class="work-type flex-container">
+          
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="multi-culture" />
+              </div>
+              <div class="info">
+                <p class="type">Cross-cultural curiosity</p>
+                <p>
+                  I like to see things from both the East Asian (Japanese) and Western perspectives to discover unspoken concepts and hidden nuances.
+                </p>
+              </div>
+            </div>
+          </div>
 
-	<p class="intersect fade-right intersect-once">
-		In short, I'm a curious person. According to my friends, I'm nerdy about almost everything... As you see in the below.
-	</p>
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="design-code" />
+              </div>
+              <div class="info">
+                <p class="type">Design x code</p>
+                <p>
+                  I do front-end coding as well as design. I like to mix both... And I love to bridge designers and developers by sharing knowledge and ideas.
+                </p>
+              </div>
+            </div>
+          </div>
 
-	<h2 class="intersect fade-down intersect-once">What I Offer</h2>
-	<SkillSet />
+          <div class="box">
+            <div class="box-content">
+              <div class="box-image icon">
+                <Icon name="equity" />
+              </div>
+                <div class="info">
+              <p class="type">Equity</p>
+              <p>
+                “How can I encourage the ideas of diversity and inclusiveness to be more common?” is one of my current theses.
+              </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-	<h2 class="intersect fade-down intersect-once">Job History</h2>
-	<Timeline />
+    <section>
+      <h2 class="intersect intersect-once">What I Offer</h2>
 
+      <p>Below are a few examples of types and prices of projects I work on.<br/>
+        If you have a different type of project to ask about, please don’t hesitate to contact me. I’m open to new experiences 😊
+      </p>
+      <WorkTypes />
+      <ul class="caption">
+        <strong>NOTICE:</strong> 
+        <li>30% of the total price will be charged as an upfront fee.</li>
+        <li>For Japanese residents, the tax-in price (with 10% of consumption tax) will apply.<br/>(Reference: <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6567.htm" target="_blank">No.6567 Provision of services to non-residents &mdash; National Tax Agency (Japanese)</a>)</li>
+      </ul>
+      
+      <p class="text-center"><a href={contactURL} target="_blank" class="button bg-ac1 col-bg4">ask for details</a>
+      <span class="caption text-center">
+        or <a href="/workflow/" class="alink caption">check the workflow</a>
+      </span>
+      </p>
+    </section>
+
+    <section>
+      <div class="heading-row">
+        <h2>Portfolio</h2>
+        <a href="/portfolio/">Find out more &rarr;</a>
+      </div>
+      <ul class="article-list horizontal">
+        {portfolioPosts.map((post: any) => <PostListHorizontal url=`/portfolio/${post.data.slug}` title={post.data.title} description={post.data.description}image={post.data.image}  tags={post.data.tags} type={post.data.type} />)}
+      </ul>
+    </section>
+
+  </div>
 </BaseLayout>
+
+<style>
+  .summary .box  {
+    background: transparent;
+  }
+  .summary .box-content {
+    background: transparent;
+  }
+  .summary .box-image {
+    @apply md:m-auto;
+  }
+  
+</style>

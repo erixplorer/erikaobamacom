@@ -1,0 +1,289 @@
+---
+---
+
+<div id="my_dataviz" class="size-full m-auto"></div>
+
+<script type="module">
+  // import * as d3 from "d3";
+import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+
+// set the dimensions and margins of the graph
+const margin = {top: 50, right: 50, bottom: 50, left: 50},
+  width = 1000,
+  height = 800;
+
+// append the svg object to the body of the page
+const svg = d3.select("#my_dataviz")
+.append("svg")
+  .attr("preserveAspectRatio", "xMidYMid meet")
+  .attr("viewBox", `0 0 ${width} ${height}`)
+  .attr("class", "m-auto size-full");
+
+const zoomContainer = svg.append("g")
+  .attr("transform",
+        `translate(-${margin.left}, -${margin.top})`);
+
+d3.json("/src/content/article/4_fundamental-skills/4_graph-data.json").then( function( data) {
+
+  // Filter nodes and links based on type
+  const filteredNodesCategory = data.nodes.filter(d => d.type === "category");
+
+  const filteredLinksCategory = data.links.filter(d => {
+    const sourceNode = data.nodes.find(node => node.id === d.source);
+    const targetNode = data.nodes.find(node => node.id === d.target);
+    return sourceNode.type === "category" && targetNode.type === "category";
+  });
+
+  const filteredNodesWork = data.nodes.filter(d => d.type === "work");
+
+  const filteredNodesWorkImg = data.nodes.filter(d => d.type === "work" && d.ext !== "webm");
+  const filteredNodesWorkVideo = data.nodes.filter(d => d.type === "work" && d.ext === "webm");
+
+  const filteredLinksWork = data.links.filter(d => {
+    const sourceNode = data.nodes.find(node => node.id === d.source);
+    const targetNode = data.nodes.find(node => node.id === d.target);
+    return sourceNode.type === "work" && targetNode.type === "category";
+  });
+
+
+  // Initialize the links
+  const link = zoomContainer
+    .selectAll()
+    .data(filteredLinksCategory)
+    .join("line")
+      .style("stroke", "var(--hl-purple-lt)")
+      .style("stroke-dasharray", "2, 3")
+
+  const worklink = zoomContainer
+    .selectAll()
+    .data(filteredLinksWork)
+    .join("line")
+      .style("stroke", "var(--hl-purple-lt)")
+      // .style("stroke-dasharray", "2, 5")
+
+  // Initialize the nodes
+  const image = zoomContainer  
+    .selectAll()
+    .data(filteredNodesWork)  // Use filtered nodes
+    .join("svg")
+        .attr("data-toggle", "modal")
+        .attr("data-target", function(d) {
+          return '#modal-' + d.name;
+        })
+
+const catname = zoomContainer
+  .selectAll()
+  .data(filteredNodesCategory)  // Use filtered nodes
+  .join("text")
+    .text(d => d.catname)
+    .attr("class","min-h-10")
+    .attr("class","text-lg font-medium")
+    .style("font-family","heading")
+    .style("fill", "var(--text-pink)")
+    .style("z-index", "10")
+
+  const catcircle = zoomContainer
+    .selectAll()
+    .data(filteredNodesCategory)  // Use filtered nodes
+      .join("circle")
+      .attr("r", 5)
+      .style("fill", "var(--hl-purple-lt)")
+
+  const toolname = zoomContainer
+    .selectAll()
+    .data(filteredNodesCategory)  // Use filtered nodes
+    .join("text")
+      .text(d => d.tool)
+      .attr("class","min-h-10")
+      .attr("class","text-xs")
+      .style("font-family","heading")
+      .style("fill", "var(--hl-green-dk)")
+      .style("z-index", "10")
+
+  const modalImg = d3.select('body')
+    .selectAll()
+    .data(filteredNodesWorkImg).enter()
+    .append('div')
+        .attr("id", function(d) {
+          return 'modal-' + d.name;
+        })
+        .attr("aria-hidden", "true")
+        .attr("class", "fixed antialiased inset-0 w-screen bg-slate-800 bg-opacity-75 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[9999]")
+        .append("div")
+          .attr("class", "bg-white text-center flex flex-col-reverse p-4 max-h-[calc(100vh-5rem)] overflow-auto rounded-lg scale-95 transition-transform duration-300 ease-out")
+          .text(d => d.desc)
+        .append("img")
+            .attr("src", function(d){return d.path + d.name + '.' + d.ext;})
+            .attr("class", "w-auto max-w-[calc(100vw-10rem)] h-auto max-h-[calc(100vh-10rem)] mb-2 last:mb-0")
+
+      
+  const modalVideo = d3.select('body')
+    .selectAll()
+    .data(filteredNodesWorkVideo).enter()
+    .append('div')
+        .attr("data-toggle", "modal")
+        .attr("id", function(d) {
+          return 'modal-' + d.name;
+        })
+        .attr("aria-hidden", "true")
+        .attr("class", "fixed antialiased inset-0 w-screen bg-slate-800 bg-opacity-75 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-[9999]")
+        .append("div")
+          .attr("class", "bg-white text-center flex flex-col-reverse p-4 max-h-[calc(100vh-5rem)] overflow-auto rounded-lg scale-95 transition-transform duration-300 ease-out")
+          .text(d => d.desc)
+        .append("video")
+          .attr("src", function(d){return d.path + d.name + '.' + d.ext;})
+          .attr("autoplay", "true")
+          .attr("loop", "true")
+          .attr("controls", "true")
+
+
+  // Create a simulation with several forces.
+  const simulation = d3.forceSimulation(data.nodes)
+      .force("link", d3.forceLink(data.links).id(d => d.id))
+      .force("charge", d3.forceManyBody())
+      .force("charge", d3.forceManyBody().strength(-500))         // This adds repulsion between nodes. Play with the -400 for the repulsion strength
+      .force("center", d3.forceCenter(width / 2, height / 2))
+      .on("tick", ticked);
+
+
+
+  // Add a drag behavior.
+  image.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+  catcircle.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+  catname.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+  toolname.call(d3.drag()
+        .on("start", dragstarted)
+        .on("drag", dragged)
+        .on("end", dragended));
+
+  // Add a zoom behavior.
+  svg.call(d3.zoom()
+  .scaleExtent([0.5, 5])  // Limits zoom level (min, max)
+  .on("zoom", (event) => {
+    zoomContainer.attr("transform", event.transform);
+  }));
+
+  // This function is run at each iteration of the force algorithm, updating the nodes position.
+  function ticked() {
+    link
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+    worklink
+      .attr("x1", function(d) { return d.source.x; })
+      .attr("y1", function(d) { return d.source.y; })
+      .attr("x2", function(d) { return d.target.x; })
+      .attr("y2", function(d) { return d.target.y; });
+
+    image
+      .attr("x", function (d) { return d.x-25; })
+      .attr("y", function(d) { return d.y-25; })
+      .append("image")
+        .attr("xlink:href", function(d) {
+          return d.path + d.name + '_thumb.webp';
+        })
+        .attr("width", 50)
+        .attr("height", 50)
+        .style("transform-origin", "center");
+ 
+    catcircle
+         .attr("cx", function (d) { return d.x; })
+         .attr("cy", function(d) { return d.y; });
+
+    catname
+      .attr("x", function (d) { return d.x+6; })
+      .attr("y", function(d) { return d.y+12; });
+   
+    toolname
+      .attr("x", function (d) { return d.x+6; })
+      .attr("y", function(d) { return d.y+32; });
+    
+    modalImg
+    modalVideo
+  }
+
+  // Reheat the simulation when drag starts, and fix the subject position.
+  function dragstarted(event) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    event.subject.fx = event.subject.x;
+    event.subject.fy = event.subject.y;
+  }
+
+  // Update the subject (dragged node) position during drag.
+  function dragged(event) {
+    event.subject.fx = event.x;
+    event.subject.fy = event.y;
+  }
+
+  // Restore the target alpha so the simulation cools after dragging ends.
+  // Unfix the subject position now that it’s no longer being dragged.
+  function dragended(event) {
+    if (!event.active) simulation.alphaTarget(0);
+    event.subject.fx = null;
+    event.subject.fy = null;
+  }
+
+  // When this cell is re-run, stop the previous simulation. (This doesn’t
+  // really matter since the target alpha is zero and the simulation will
+  // stop naturally, but it’s a good practice.)
+  // invalidation.then(() => simulation.stop());
+
+  return svg.node();
+
+}).catch(function(error){
+     // handle error    
+});
+</script>
+
+<script src="https://unpkg.com/@material-tailwind/html@3.0.0-beta.7/dist/material-tailwind.umd.min.js" defer></script>
+
+
+<style>
+  :root {
+        --text-pink: #ee92a9;
+
+
+    /* == Light mode == */
+
+    /* --bg-light: #fbfaf9; */
+    --bg-light: #f7f6f6;
+    --bg-light-tp: rgba(251, 250, 249, .9);
+
+    --text-light: #6d4f4f;
+    --text-light-tp: rgba(109, 79, 79, .9);
+    --bg-quote-light: hsl(30, 20%, 94%);
+
+    --hl-green-lt: #a8e6cf;
+    --hl-green-lt-tp: rgba(168, 230, 207, .97);
+    --hl-purple-lt: #d8d3f3;
+    --hl-purple-lt-tp: rgba(216, 211, 243, .97);
+    /* --hl-pink-lt: #f8cfd9; */
+    --hl-pink-lt: #f7ccd5;
+    --hl-pink-lt-tp: rgb(255, 224, 232, .85);
+    --hl-neutral: #8c8282;
+
+
+    /* == Dark mode == */
+
+    --bg-dark: #050505;
+    --bg-dark-tp: rgba(251, 250, 249, .7);
+    --text-dark: #e6d8d8;
+    --text-dark-tp: rgba(140, 130, 130, .97);
+    --bg-quote-dark: hsl(40, 18%, 8%);
+
+    --hl-green-dk: #a1d4c3;
+    --hl-purple-dk: #c4c0de;
+    --hl-pink-dk: #e4b0bb;
+  }
+</style>

@@ -1,44 +1,84 @@
 ---
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import '../styles/global.css';
-const pagePathname = Astro.url.pathname
-const { pageTitle, pageCategory, pageDescription, pageImageUrl, pageImageAlt } = Astro.props;
-const siteTitle = "Erika Obama"
-const siteKeywordsEn = "portfolio, blog, web design, UI design, UX design, graphic design, motion design, design, motion graphics, animated stickers, animated emojis, 3D modeling, 3D art, illustration, kawaii illustration, all-rounder, fullstack designer, fullstack, web designer, graphic designer, designer, webdev"
-const siteKeywordsJa = "ポートフォリオ, ブログ, 考察, ウェブデザイン, Webデザイン, UIデザイン, UXデザイン, グラフィックデザイン, モーショングラフィックス, アニメーションスタンプ, 動くスタンプ, アニメーション絵文字, 動く絵文字, 3Dモデリング, 3DCG, イラスト, かわいいイラスト, ジェネラリスト, デザイナー, Webデザイナー, グラフィックデザイナー, Web開発"
-
+import Header from "../components/parts/Header.astro";
+import Footer from "../components/parts/Footer.astro";
+import siteKeywordsEn from "../components/parts/siteKeywordsEn.txt?raw";
+import siteKeywordsJa from "../components/parts/siteKeywordsJa.txt?raw";
+import "../styles/global.css";
+const pagePathname = Astro.url.pathname;
+const { pageTitle, pageCategory, pageDescription, pageImageUrl, pageImageAlt } =
+  Astro.props;
+const siteTitle = "Erika Obama";
 ---
-<html lang="en">
+
+<html lang={Astro.currentLocale}>
   <head>
     <meta charset="utf-8" />
-    <link rel="sitemap" href="/sitemap-index.xml">
-    <link rel="alternate" type="application/rss+xml" title="Erika Obama" href="/rss.xml" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="Erika Obama"
+      href={ Astro.currentLocale === "ja" ? `/ja/rss.xml` : `/rss.xml`}
+    />
+    <title>{siteTitle} | {pageTitle}</title>
+    <meta
+      name="keywords"
+      content={Astro.currentLocale === "ja"
+        ? `${siteKeywordsJa}`
+        : `${siteKeywordsEn}`}
+    />
+    {pageDescription && <meta name="description" content={pageDescription} />}
+    <meta name="generator" content={Astro.generator} />
+    <meta name="viewport" content="width=device-width" />
+    
+    <link rel="icon" type="image/png" sizes="16x16" href="/src/images/favicon/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/src/images/favicon/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/src/images/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/src/images/favicon/android-chrome-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/src/images/favicon/android-chrome-512x512.png">
+
     <script defer src="https://unpkg.com/tailwindcss-intersect@2.x.x/dist/observer.min.js"></script>
 
-    <meta name="viewport" content="width=device-width" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{siteTitle} | {pageTitle}</title>
-    <meta name="keywords" content={ Astro.currentLocale === "ja" ? `${siteKeywordsJa}` : `${siteKeywordsEn}`}>
-    {pageDescription && <meta name="description" content={pageDescription}>}
     <!-- Open Graph tags -->
     <meta property="og:title" content={pageTitle} />
     <meta property="og:type" content="website" />
     <meta property="og:description" content={pageDescription} />
-    <meta property="og:image" content={pageImageUrl}>
-    <meta property="og:image:alt" content={pageImageAlt}>
+    <meta property="og:image" content={pageImageUrl} />
+    <meta property="og:image:alt" content={pageImageAlt} />
   </head>
-  <body class=`${pageCategory}`>
-    
+  <body class={pageCategory}>
     <Header />
-    { pagePathname === "/" ? `` : pagePathname === "/en/" ? `` : pagePathname === "/ja/" ? `` :
-      <h1 class="intersect fade-down intersect-once">{pageTitle}</h1>
+    {
+      pagePathname === "/" ? (
+        ``
+      ) : pagePathname === "/en/" ? (
+        ``
+      ) : pagePathname === "/ja/" ? (
+        ``
+      ) : (
+        <h1 class="intersect intersect-once animate-fade">{pageTitle}</h1>
+      )
     }
-     <slot />
+    <slot />
     <Footer />
     <script>
       import "../scripts/menu.js";
+    </script>
+    
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('data-theme')) {
+          return localStorage.getItem('data-theme') ?? "light";
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+          return 'light';
+      })();
+
+      document.documentElement.setAttribute('data-theme', theme);
+      document.getElementById('colorScheme').value = theme;
+      window.localStorage.setItem('data-theme', theme);
     </script>
   </body>
 </html>

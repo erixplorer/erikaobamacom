@@ -1,0 +1,18 @@
+---
+const { title, url, image, tags, description, type } = Astro.props;
+---
+
+<li class="list-item">
+    <div class="image">
+        <a href=`${url}`><img src={image.url} /></a>
+    </div>
+    <div class="postinfo">
+        <a href=`${url}` class="article-title">{title}</a>
+        <div class="tags">{tags.map((tag) => (
+            <span class="tag">
+                <a href={ Astro.currentLocale === "ja" ? `/ja/${type}/tags/${tag}` : `/${type}/tags/${tag}` }>#{tag}</a>
+            </span>
+        ))}</div>
+        <p>{description}</p>
+    </div>
+</li>
