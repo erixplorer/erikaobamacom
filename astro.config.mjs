@@ -1,18 +1,17 @@
 // @ts-check
-import { defineConfig, fontProviders } from 'astro/config';
+import { defineConfig } from 'astro/config';
 
 import preact from '@astrojs/preact';
-import tailwind from '@astrojs/tailwind';
 import pagefind from "astro-pagefind";
 import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
+import tailwindcss from "@tailwindcss/vite"; 
 
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
   integrations: [
     preact(), 
-    tailwind(), 
     pagefind(), 
     icon({
       iconDir: "src/images/icon",
@@ -27,6 +26,10 @@ export default defineConfig({
       // gfm: false,
     }),
   ],
+  vite: { 
+    plugins: [
+      tailwindcss(),
+    ]},
   i18n: {
     locales: ["en", "ja"],
     defaultLocale: "en",
