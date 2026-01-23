@@ -1,0 +1,385 @@
+---
+layout: /src/layouts/MarkdownPostLayoutMdx.astro
+locale: 'en'
+slug: 'gimp-ui'
+title: "Let's Make GIMP's UI Easier For The Brain"
+type: 'article'
+category: 'article'
+pubDate: 2026-01-23
+tags: ["UI", "UX", "open source", "redesign", "ideas"]
+description: "GIMP is probably the most famous, Photoshop-like free and open-source image editor. I always recommend this program to engineers who occasionally need a PSD viewer or editor, but with a little hesitation..."
+image:
+    url: '/src/images/article/gimp-ui/thumb.webp'
+    alt: "Let's Make GIMP's UI Easier For The Brain"
+    hero: false
+---
+
+import EmbedYouTube from '/src/components/parts/EmbedYouTube.astro';
+
+*\* This article is a digested summary of this video on YouTube:*  
+<EmbedYouTube vid="wjA35TbMfLQ" />
+
+<div class="flex place-items-center gap-(--m-base) mt-(--m-xl) mb-(--m-base)">
+    <div>
+        <img src="/src/images/article/gimp-ui/gimp-logo.svg" alt="GIMP logo" />
+    </div>
+    <div>
+        <div>
+            <span class="inline-block w-[8ch]">Price</span>
+            <span>Free</span>
+        </div>
+        <div>
+            <span class="inline-block w-[8ch]">License</span>
+            <span>GPL</span>
+        </div>
+        <div>
+            <a href="https://www.gimp.org/" target="_blank">{`https://www.gimp.org/`}</a>
+        </div>
+    </div>
+</div>
+
+GIMP is probably the most famous FOSS image editor. It’s known for/as:  
+
+- A free and open-source image editor
+- A Photoshop alternative
+- The feature-richness
+- Decent PSD format compatibility
+- **The steep learning curve**
+
+I always recommend this program to engineers who occasionally need a PSD viewer or editor, but with a little hesitation...  
+
+Yes, because the steep learning curve makes it difficult to use. Even as a designer who learned the layer system with GIMP (ver. 1.2.0), it feels still steep...  
+
+So, what makes GIMP this difficult?  
+
+
+## The Problems (& Table Of Contents)
+
+<img src="/src/images/article/gimp-ui/problems.webp" alt="The problems of GIMP" class="mx-auto mb-(--m-lg)" />
+
+I think there are two main reasons that make GIMP difficult to use:  
+
+1. <a href="#1">The disorganized UI/UX</a>
+    1. <a href="#1-1">Navigation</a>
+    2. <a href="#1-2">Colors</a>
+    3. <a href="#1-3">Palettes</a>
+    4. <a href="#1-4">Default selections of the palettes</a>
+    5. <a href="#1-5">Brushes</a>
+    6. <a href="#1-6">Layers</a>
+    7. <a href="#1-7">Menus</a>
+2. <a href="#2">The unclear direction of the project and the lack of target users</a>
+
+While obviously I can’t change the project’s direction, I still can share my ideas on improving the UI and UX. Let’s look into it...  
+
+<h2 id="1">1. The Disorganized UI/UX</h2>
+
+<h3 id="1-1">1-1. Navigation</h3>
+
+With the default UI layout, I have to navigate a long distance throughout the window to configure a brush. Fundamentally, the more you have to search for the position of the next tool, the more you'll get the chance of a little decision fatigue.  
+
+<video autoplay loop muted class="mx-auto">
+  <source
+    src="/src/images/article/gimp-ui/ui_nav_before.webm"
+    type="video/webm"
+  />
+</video>
+
+Fortunately, this problem can easily be solved by arranging the panel layout.  
+
+<img src="/src/images/article/gimp-ui/ui_nav_after.webp" alt="UI panel layout for less decision fatigue" />
+
+Customizing the panel layout is easy, but it’s a kind of exception. From now on, I'd like to show how I would recreate the interface.  
+
+
+<h3 id="1-2">1-2. Colors</h3>
+
+GIMP has six types of color pickers: GIMP, CMYK, Watercolor, Wheel, Palette, and Scales. A few questions popped up in my mind:  
+
+- Why is a classic square-shaped color picker named "GIMP"?
+- The CMYK panel does not have a visual spectrum. (Instead, it has a HEX textbox which only works with RGB color mode)
+
+<div class="image-grid !grid-cols-3 md:!grid-cols-6 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_colors_before_1_gimp.webp" alt="GIMP color picker" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_2_cmyk.webp" alt="GIMP color picker" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_3_watercolor.webp" alt="GIMP color picker" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_4_wheel.webp" alt="GIMP color picker" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_5_palette.webp" alt="GIMP color picker" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_6_scales.webp" alt="GIMP color picker" />
+</div>
+<figcaption>Left to right: GIMP, CMYK, Watercolor, Wheel, Palette, Scales</figcaption>
+
+If I recreate the interface, I would:
+
+1. Unify the color spectrum (GIMP) and values (Scale) into a single panel. 
+	- This way, I can roughly choose a color and then adjust the precise values after.
+2. Add some dropdown-style selectors to the same panel. 
+	1. CMYK selector to choose a color in the same manner as 1 when soft-proofing is enabled.
+	2. Adding an HSV/LCh selector in addition will simplify the color picking flow by removing two panels ("CMYK" and "Scale").
+3. Apply the similar modifications to the "Wheel" and the "Watercolor".
+4. Remove the "Palette". It looks like a duplicate of "Palette Editor" but with no editing ability.
+
+<div class="image-grid !grid-cols-3 place-items-center mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_colors_after_1_gimp.webm"
+            type="video/webm"
+        />
+    </video>
+    <img src="/src/images/article/gimp-ui/ui_colors_after_2_wheel.webp" alt="GIMP color picker (recreated)" />
+    <img src="/src/images/article/gimp-ui/ui_colors_after_3_watercolor.webp" alt="GIMP color picker (recreated)" />
+</div>
+<figcaption>Recreated color selectors</figcaption>
+
+Also, I would modify:  
+
+1. The panel name "GIMP" to something related to the panel's characteristic ("Square")
+2. Standardize the name of this panel.
+	 It uses "Colors" on the "Add a Tab" list, but "FG/BG Color" in a tooltip.
+3. Change the default tab appearance settings from the "state of the tool" to "icon".
+	- Beginners would be confused if the tab icon changes each time a different sub-option is selected.
+
+<div class="image-grid !grid-cols-2 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_colors_tooltip_1.webp" alt="GIMP color picker tooltip (before)" />
+    <img src="/src/images/article/gimp-ui/ui_colors_tooltip_2.webp" alt="GIMP color picker tooltip (recreated)" />
+</div>
+<figcaption>GIMP → Square</figcaption>
+
+<div class="image-grid place-items-center mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_colors_after_name.webm"
+            type="video/webm"
+        />
+    </video>
+    <img src="/src/images/article/gimp-ui/ui_colors_icon.webp" alt="GIMP tab icon default settings idea" />
+</div>
+<figcaption>Some modifications to the list</figcaption>
+
+
+<h3 id="1-3">1-3. Palettes</h3>
+
+These two text fields on top and bottom are a little tricky.  
+
+"Filter" obviously exists to filter the list. However, by default, you will see no filter option available. To use the filter, you have to have at least one palette that has a tag. So, the "Enter tags" field on bottom helps you add a filter option = tag.  
+
+Two fields for different purposes share the same look and no hint of their usages. This is very confusing.  
+
+<img src="/src/images/article/gimp-ui/ui_palette_before_1_pulldown.webp" alt="GIMP Palette list UI" class="mx-auto" />
+<figcaption>They seem like accidental duplicates</figcaption>
+
+I think that these fields should be unified so users can naturally find where they can modify anything related to the palette list.  
+
+To assign different roles to this text field, I would add a "Filter" and an "Edit" button.  
+
+- By clicking the "Filter" button, you can see what filter options are available
+	- Or a short instruction about "how you can add an option" if nothing is registered.
+- The "Edit" button toggles the text field's function between Tag Editor mode and Filter mode.
+	- So, you can assign tags from the same text field.
+
+<div class="image-grid md:!grid-cols-3 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_palette_after_tooltip_1.webp" alt="GIMP Palette list UI (recreated)" />
+    <img src="/src/images/article/gimp-ui/ui_palette_after_tooltip_2.webp" alt="GIMP Palette list UI (recreated)" />
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_palette_after_edit.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>Filter mode: When there is a filter option / When there is no filter option<br/>Edit button: It toggles between Tag editor mode and Filter mode</figcaption>
+
+Or, I would just make a "Tag" column where you can edit tags directly.  
+
+<img src="/src/images/article/gimp-ui/ui_palette_after_layout_alt.webp" alt="GIMP Palette list UI (recreated)" class="mx-auto" />
+<figcaption>Alternate idea: Double-click to edit tags</figcaption>
+
+
+<h3 id="1-4">1-4. Default Selections Of The Palettes</h3>
+
+Let me be honest about the default selection... Most of the palettes seem randomly added without having a standard.  
+
+<img src="/src/images/article/gimp-ui/ui_palette-default_before_1.webp" alt="GIMP default color palettes" class="mx-auto" />
+<figcaption>The default palette list</figcaption>
+
+Some palettes are practical. For example, the "Web" palette is nice for designers and developers. But other palettes, especially these two are bizarre choices for a graphic editor:  
+
+- EGA: A 1980s technical color scheme
+- China: A cool-colored palette (while China's national color is red)
+
+<div class="image-grid place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_palette-default_before_2_ega.webp" alt="EGA color palette from GIMP" />
+    <img src="/src/images/article/gimp-ui/ui_palette-default_before_3_china.webp" alt="China color palette from GIMP" />
+</div>  
+<figcaption>"EGA" and "China" color palettes</figcaption> 
+ 
+If I could select what should be the defaults, I would  
+
+1. Keep only a few palettes from what’s available now
+2. Add more useful colors:
+	- For IT people, things listed on the GIMP Color Palettes
+    - For graphic people, something that covers this spectrum (Sorry, I didn't find an exact palette)
+
+<div class="image-grid !grid-cols-2 md:!flex md:place-content-center place-items-center w-fit mx-auto">
+    <div class="flex gap-(--m-xs) place-items-center">
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_1.webp" alt="GIMP default color palette idea" />
+        &plus;
+    </div>
+    <div class="flex flex-wrap gap-(--m-xs) w-auto md:max-w-[50%]">
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_2.webp" alt="GIMP default color palette idea" />
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_3.webp" alt="GIMP default color palette idea" />
+    </div>
+</div>  
+<figcaption>Palettes from <a href="https://robert-96.github.io/gimp-color-palettes/" target="_blank">GIMP Color Palettes</a> and <a href="https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook" target="_blank">Charlene Collins Freeman Art</a></figcaption>
+
+
+<h3 id="1-5">1-5. Brushes</h3>
+
+To the Brush panel, I would apply the same Filter/Edit mode UI. And, I would also:  
+
+- Remove the "spacing" slider
+- Or replace it with a "brush size" bar ("spacing" is a more advanced and less demanded feature than this one)
+
+<img src="/src/images/article/gimp-ui/ui_brushes_spacing-size.gif" alt="GIMP brush panel (before/after)" class="mx-auto" />
+
+
+<h3 id="1-6">1-6. Layers</h3>
+  
+At a glance, the Layer panel looks nice, but...  
+Why does my brain recognize the Windows Update icon from a pulldown menu? And why is Wilber becoming crazy here?  
+
+<img src="/src/images/article/gimp-ui/ui_layers_before_icons.webp" alt="GIMP layer dropdown icons" class="mx-auto" />  
+
+Well. Seriously, they are the switchers of default/legacy layer modes.  
+
+<img src="/src/images/article/gimp-ui/ui_layers_legacy.webp" alt="GIMP legacy layer mode" class="mx-auto" />  
+
+However, I don’t think that this switcher should grab attention 7 years after the legacy mode retired its primary role. To keep it compatible, I would not remove the options but push them to the backstage/backyard instead. Let's name it "Mode Group".
+
+<img src="/src/images/article/gimp-ui/ui_layers_after_menu.webp" alt="GIMP layer mode menu (recreated)" class="mx-auto" />
+
+
+<h3 id="1-7">1-7. Menus</h3>
+
+<span class="caption">(This section is long and complex. So, I picked up a few issues from the original video. For the full list, please <a href="https://youtu.be/wjA35TbMfLQ" target="_blank">watch it here</a>.)</span>
+
+#### 1-7-1. Icons in the List: File and Edit  
+
+Icons in the list can help finding important functions easy. Though, I don’t think the (make/generate? from) "Screenshot" is a frequently used feature. So why give this a chance to disrupt the visual harmony?   
+
+The same goes for "Fill with" menus. (These might be frequently used features, but I would remove the icons since the frequent change of the selected colors/pattern could rather cause a cognitive issue.)  
+
+
+<div class="image-grid !grid-cols-2 place-items-center w-fit mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_nav_icon-1.webm"
+            type="video/webm"
+        />
+    </video>
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_nav_icon-2.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>Examples of the icons in the list</figcaption>
+
+
+#### 1-7-2. Misfit Categories and Duplicates: Select and View  
+
+##### Select  
+
+- Float is a collection of copy/paste operations. So, move this to "Edit".
+
+##### View  
+
+- Remove the "Navigation Window" in this category. It also exists in the `Window > Dockable Dialogs` menu.
+- Instead, move the `Image > Guides` to here.
+
+
+<div class="image-grid place-items-center w-fit mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/menu_edit-select.webm"
+            type="video/webm"
+        />
+    </video>
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/menu_view_nav.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>Misfit categorization and duplication of menu items</figcaption>
+
+
+#### 1-7-3. The Use of Standard Terms: Image and Layer  
+
+- The standard term of "Encoding" in image editing is "Color Depth".
+- "Layer Stack" or "Layer Order" can make more sense for "Stack".<br/><span class="caption">Note: I found out that the term "Stack" is commonly used in the software engineering domain to refer to a similar concept to the "Layer Order" or "Layer Group"</span>
+
+<div class="image-grid w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/menu_image_encoding.webp" alt="GIMP menu Encoding" />
+    <img src="/src/images/article/gimp-ui/menu_layer_stack.webp" alt="GIMP menu Stack" />
+</div>
+<figcaption>Not using the standard, or a familiar term for typical graphic editor users</figcaption>
+
+#### 1-7-4. Item Order: Windows and Help  
+
+##### Windows  
+
+The items inside the "Dockable Dialogs" can be much easier to find if they are ordered by functional similarity.  
+
+##### Help  
+
+The number of links that go to the same online help page is... Confusing. I think having the "User Manual" section is enough. Plus, this "GIMP Online" section can be more organized if it's grouped by target audience.  
+
+<div class="image-grid w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/menu_windows_reorder.gif" alt="GIMP menu Windows reorder idea" />
+    <img src="/src/images/article/gimp-ui/menu_help_reorder.gif" alt="GIMP menu Help reorder idea" />
+</div>
+<figcaption>Uncategorized menu item orders</figcaption>
+
+
+<h2 id="2">The Unclear Direction of the Project and the Lack of Target Users</h2>
+From what I've done, I assume the GIMP's biggest problem is the lack of clarification of its target users. As it's said, "Know your enemies". Specifying who to target is an essential step to set a project's future direction, goals, and priorities.   
+
+According to the official website, basically, GIMP is for everyone. But, I don't think it's accurate, especially since they also claimed that they don't care about the industrial standard or the familiar way to do things.  
+
+
+<div class="image-grid place-items-center w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/2_gimp_intro.webp" alt="GIMP official statement" />
+    <img src="/src/images/article/gimp-ui/2_gimp_faq.webp" alt="GIMP official statement" />
+</div>
+<figcaption>"Developers stick to what people know" reminds the "Stack" problem I mentioned before. It seems to be a perspective mismatch between FOSS developers and designers (typical users of Adobe apps)...</figcaption>
+
+
+Yes, the standard way is *not* always *the best way*. However, can you imagine what enabled the global population to adopt computer technology when the concept of the non-physical document was totally new?   
+
+Oftentimes, a standard way has an obvious reason to be standard. And, if you want to offer the other way, you cannot just go top-down, but instead, you must speak in their language.  
+
+So, you must know who is *them*.  
+
+<img src="/src/images/article/gimp-ui/ui_metaphor_mac-os.webp" alt="Office stationery metaphors helped the adaptation of digital tools" class="mx-auto" />
+<figcaption>Choosing familiar metaphors is the key.</figcaption>
+
+
+## Final Thoughts  
+
+Although making a clarification is up to the GIMP team, sharing our opinions is still important. You can either contribute, give feedback, make tutorial videos, or even build your own wiki.   
+
+This way, you can help ease the steep learning curve of a valuable yet difficult tool. And, perhaps your "better way" will grab the attention of a few contributors.  
+
+
+## References  
+
+- GIMP: <a href="https://www.gimp.org/" target="_blank">{`https://www.gimp.org/`}</a>
+- EGA palette:
+	- <a href="https://www.gimpusers.com/forums/gimp-user/17474-gimp-s-ega-default-palette" target="_blank">{`https://www.gimpusers.com/forums/gimp-user/17474-gimp-s-ega-default-palette`}</a>
+    - <a href="https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter" target="_blank">{`https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter`}</a>
+- National colors: <a href="https://en.wikipedia.org/wiki/National_colours" target="_blank">{`https://en.wikipedia.org/wiki/National_colours`}</a>
+- GIMP Color Palettes: <a href="https://robert-96.github.io/gimp-color-palettes/" target="_blank">{`https://robert-96.github.io/gimp-color-palettes/`}</a>
+- Watercolor palette: <a href="https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook" target="_blank">{`https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook`}</a>
+- "Introducing Lisa" ad: <a href="https://guidebookgallery.org/ads/magazines/lisa/introducinglisa" target="_blank">{`https://guidebookgallery.org/ads/magazines/lisa/introducinglisa`}</a>

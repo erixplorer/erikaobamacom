@@ -1,0 +1,402 @@
+---
+layout: /src/layouts/MarkdownPostLayoutMdx.astro
+locale: 'ja'
+slug: 'gimp-ui'
+title: "GIMPのUIをアタマに優しくリメイクしてみる"
+type: 'article'
+category: 'article'
+pubDate: 2026-01-23
+tags: ["UI", "UX", "オープンソース", "リデザイン", "アイデア"]
+description: "おそらくPhotoshop似のオープンソース画像処理ソフトとして一番有名であろうGIMP。私も「たまにPSD用のビューアーや編集ソフトが必要」だというエンジニアの方にはいつもこれをおすすめしているんですが、毎回若干躊躇してしまいます…。"
+image:
+    url: '/src/images/article/gimp-ui/thumb.webp'
+    alt: "GIMPのUIをアタマに優しくリメイクしてみる"
+    hero: false
+---
+
+import EmbedYouTube from '/src/components/parts/EmbedYouTube.astro';
+
+*※この記事は以下のYouTube動画のダイジェスト版です。*  
+<EmbedYouTube vid="wjA35TbMfLQ" />
+
+<div class="flex place-items-center gap-(--m-base) mt-(--m-xl) mb-(--m-base)">
+    <div>
+        <img src="/src/images/article/gimp-ui/gimp-logo.svg" alt="GIMP ロゴ" />
+    </div>
+    <div>
+        <div>
+            <span class="inline-block w-[8ch]">価格</span>
+            <span>無料</span>
+        </div>
+        <div>
+            <span class="inline-block w-[8ch]">ライセンス</span>
+            <span>GPL</span>
+        </div>
+        <div>
+            <a href="https://www.gimp.org/" target="_blank">{`https://www.gimp.org/`}</a>
+        </div>
+    </div>
+</div>
+
+FOSS画像処理ソフトの中でおそらく一番有名なGIMP。  
+
+- 無料のオープンソース画像処理ソフト
+- Photoshopの代替ソフト
+- 高機能
+- PSDとの十分な互換性
+- **急な学習曲線**
+
+といった特徴で知られています。  
+
+私も「たまにPSD用のビューアーや編集ソフトが必要」というエンジニアの方にはいつもこれをおすすめしているんですが、毎回若干ためらってしまいます…。  
+
+なんせ学習曲線が急なおかげで使いにくい。レイヤーの概念をGIMP（ver. 1.2.0）で学んだデザイナー（私）でさえ、未だに習得しにくいと感じます…。  
+
+なぜGIMPはそこまで難しいんでしょうか？
+
+
+## 問題点（兼見出し）
+
+<img src="/src/images/article/gimp-ui/problems.webp" alt="GIMPの問題点" class="mx-auto mb-(--m-lg)" />
+
+GIMPが難しい理由ですが、大きく分けて2つあると思っています。  
+
+1. <a href="#1">UI・UXが整っていない</a>
+    1. <a href="#1-1">ナビゲーション</a>
+    2. <a href="#1-2">描画色/背景色</a>
+    3. <a href="#1-3">パレット</a>
+    4. <a href="#1-4">デフォルトで選べるパレットの種類</a>
+    5. <a href="#1-5">ブラシ</a>
+    6. <a href="#1-6">レイヤー</a>
+    7. <a href="#1-7">メニュー</a>
+2. <a href="#2">不明確なプロジェクトの方向性とターゲット層の不在</a>
+
+もちろん私がプロジェクトの方向性を変えることはできませんが、UIやUXの改善アイデアを共有することくらいはできるかなと。というわけでちょっと書いてみます。  
+
+<h2 id="1">1. UI・UXが整っていない</h2>
+
+<h3 id="1-1">1-1. ナビゲーション</h3>
+
+デフォルトのUIだと、ブラシを調整するのにウインドウ内をあちこち行ったり来たりしなければなりません。基本的に、次のツールの場所を探す回数が多ければ多いほど、脳の決断疲れを引き起こしやすくなってしまいます。  
+
+<video autoplay loop muted class="mx-auto">
+  <source
+    src="/src/images/article/gimp-ui/ui_nav_before.webm"
+    type="video/webm"
+  />
+</video>
+
+幸い、この問題はダイアログの配置を変えることで解決できます。  
+
+<img src="/src/images/article/gimp-ui/ui_nav_after.webp" alt="決断疲れが少なくなるUIダイアログの配置" />
+
+配置は簡単にカスタマイズできますが、こういったものは例外です。ここからは、私ならどうUIをリメイクするかについてお話ししたいと思います。  
+
+
+<h3 id="1-2">1-2. 描画色/背景色</h3>
+
+GIMPには6種類のカラーピッカー（GIMP、CMYK、水彩色、色相環、パレット、スケール）があります。  
+ここで疑問に思うのが以下の点。
+
+- よくある四角形のカラーピッカーの名前がなぜか『GIMP』
+- CMYKのパネルにスペクトラムがない（代わりになぜかRGBモードにしか対応しないHEX値の欄がある）
+
+<div class="image-grid !grid-cols-3 md:!grid-cols-6 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_colors_before_1_gimp.webp" alt="GIMP カラーピッカー" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_2_cmyk.webp" alt="GIMP カラーピッカー" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_3_watercolor.webp" alt="GIMP カラーピッカー" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_4_wheel.webp" alt="GIMP カラーピッカー" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_5_palette.webp" alt="GIMP カラーピッカー" />
+    <img src="/src/images/article/gimp-ui/ui_colors_before_6_scales.webp" alt="GIMP カラーピッカー" />
+</div>
+<figcaption>左からGIMP、CMYK、水彩色、色相環、パレット、スケール</figcaption>
+
+もしこのUIを作り変えるとしたら、こんな感じでしょうか。
+1. スペクトラム（GIMP）と値（スケール）を1つのパネル内にまとめる
+    - こうすれば、まずざっくりと色を選んで後から細かい値を指定するといったことができるようになります。
+2. 同じパネルにドロップダウンリストを追加する
+    1. CMYKセレクターを追加すれば、ソフトプルーフをONの状態で1と同じ操作ができるようになります。
+    2. 更にHSV/LChセレクターを統合することで『CMYK』と『スケール』の2パネルが不要になり、色選びの作業フローがシンプルになります。
+3. 『色相環』と『水彩色』にも同じように変更
+4. 『パレット』は『パレットエディター』の編集機能なし版といった感じで被っているので削除
+
+<div class="image-grid !grid-cols-3 place-items-center mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_colors_after_1_gimp.webm"
+            type="video/webm"
+        />
+    </video>
+    <img src="/src/images/article/gimp-ui/ui_colors_after_2_wheel.webp" alt="GIMP カラーピッカー （リデザイン）" />
+    <img src="/src/images/article/gimp-ui/ui_colors_after_3_watercolor.webp" alt="GIMP カラーピッカー （リデザイン）" />
+</div>
+<figcaption>再構成したカラーピッカー</figcaption>
+
+あとこういった部分も変更したいです。 
+
+1. 『GIMP』をパネルの特徴に合った名前に変える（『Square』など）
+2. ダイアログの名称を統一する<span class="caption">（※日本語版では問題ありません）</span>
+    - 『Add a Tab』リスト内では『Colors』ですが、ツールチップでは『FG/BG Color』になっています。
+3. デフォルトのタブの見出し設定を『現在の状態』から『アイコン』に変える
+    - ツール内の選択項目が変わるたびに見出しの見た目も変わるので、初心者だと迷ってしまいます。
+
+<div class="image-grid !grid-cols-2 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_colors_tooltip_1.webp" alt="GIMP カラーピッカー ツールチップ (before)" />
+    <img src="/src/images/article/gimp-ui/ui_colors_tooltip_2.webp" alt="GIMP カラーピッカー ツールチップ （リデザイン）" />
+</div>
+<figcaption>GIMP → Square</figcaption>
+
+<div class="image-grid place-items-center mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_colors_after_name.webm"
+            type="video/webm"
+        />
+    </video>
+    <img src="/src/images/article/gimp-ui/ui_colors_icon.webp" alt="GIMP タブアイコンデフォルト設定案" />
+</div>
+<figcaption>リストの設定変更例</figcaption>
+
+
+<h3 id="1-3">1-3. パレット</h3>
+
+この上下のテキストボックスはちょっと厄介かもしれません。
+
+『filter（タグで検索）』はもちろん表示項目を絞り込むために存在するわけですが、デフォルトの状態だと何のオプションも表示されません。絞り込むには、まず最低でも1つ、何かしらのタグが付いたパレットが必要です。そこでダイアログ下部にオプション＝タグを追加するための『enter tags（タグを付ける）』があるわけです。
+
+目的は違うけれど見た目は同じなボックスが2つあって、使い方については何のヒントもない。これはかなり混乱します。  
+<span class="caption">（※日本語UIは目的語がはっきりしているのでそこまででもないですが）</span>
+
+<img src="/src/images/article/gimp-ui/ui_palette_before_1_pulldown.webp" alt="GIMP パレットリストUI" class="mx-auto" />
+<figcaption>うっかり2つ置いてしまったようにも見えます</figcaption>
+
+ユーザーがリスト関連の編集機能をすんなりと見つけられるように、この2つはまとめるべきではないかと思いました。
+
+1つのテキストボックスに2つの機能を与えるため、『Filter（フィルター）』ボタンと『Edit（編集）』ボタンを加えます。
+- 『Filter』をクリックすると、選択可能な絞り込みオプションが表示されます。
+    - 選択可能なオプションが何もない場合は、追加方法についての説明が表示されます。
+- 『Edit』ボタンで、テキストボックスの機能をタグ編集モードと絞り込みモードに切り替えられます。
+    - こうすることで、タグ編集も同じテキストボックス内でできるようになります。
+
+<div class="image-grid md:!grid-cols-3 place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_palette_after_tooltip_1.webp" alt="GIMP パレットリストUI （リデザイン）" />
+    <img src="/src/images/article/gimp-ui/ui_palette_after_tooltip_2.webp" alt="GIMP パレットリストUI （リデザイン）" />
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_palette_after_edit.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>絞り込みモード：選択可能なオプションがある時・ない時<br/>編集ボタン：テキストボックスの機能をタグ編集モードと絞り込みモードに切り替えられます</figcaption>
+
+あるいは『Tag』カラムから直接タグを編集できるようにするのもアリかもしれません。 
+
+
+<img src="/src/images/article/gimp-ui/ui_palette_after_layout_alt.webp" alt="GIMP パレットリストUI （リデザイン）" class="mx-auto" />
+<figcaption>別案：ダブルクリックでタグを編集</figcaption>
+
+
+<h3 id="1-4">1-4. デフォルトで選べるパレットの種類</h3>
+
+デフォルトラインナップの正直な感想ですが…  
+ほとんどのパレットは選定基準もなく適当に追加されたのではと思ってしまいます。
+
+<img src="/src/images/article/gimp-ui/ui_palette-default_before_1.webp" alt="GIMP デフォルトで選べるカラーパレット" class="mx-auto" />
+<figcaption>デフォルトで選べるパレットたち</figcaption>
+
+もちろん中には実用的なものもあります。『Web』はデザイナーやデベロッパーに嬉しいですし。  
+ただ他のパレット、特に下の2つは画像処理ソフト的に謎なチョイスです。  
+
+- EGA：1980年代の技術系カラースキーム
+- China：寒色系パレット（中国の色といえば赤なのに）
+
+
+<div class="image-grid place-items-center mx-auto">
+    <img src="/src/images/article/gimp-ui/ui_palette-default_before_2_ega.webp" alt="GIMP EGA カラーパレット" />
+    <img src="/src/images/article/gimp-ui/ui_palette-default_before_3_china.webp" alt="GIMP China カラーパレット" />
+</div>  
+<figcaption>『EGA』と『China』カラーパレット</figcaption> 
+
+もし私がデフォルトラインナップを選ぶとしたら
+
+1. 今ある中から数点だけ残します
+2. その上で、役に立つ色を追加します 
+    - IT関係のユーザー向けに『GIMP Color Palettes』にリストアップされているものを
+    - グラフィック関係のユーザー向けに、下の画像の色合いをカバーできるパレットを（具体例を挙げられなくて恐縮ですが）
+
+<div class="image-grid !grid-cols-2 md:!flex md:place-content-center place-items-center w-fit mx-auto">
+    <div class="flex gap-(--m-xs) place-items-center">
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_1.webp" alt="GIMP デフォルトカラーパレットのラインナップ案" />
+        &plus;
+    </div>
+    <div class="flex flex-wrap gap-(--m-xs) w-auto md:max-w-[50%]">
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_2.webp" alt="GIMP デフォルトカラーパレットのラインナップ案" />
+        <img src="/src/images/article/gimp-ui/ui_palette-default_after_3.webp" alt="GIMP デフォルトカラーパレットのラインナップ案" />
+    </div>
+</div>  
+<figcaption>出典：<a href="https://robert-96.github.io/gimp-color-palettes/" target="_blank">GIMP Color Palettes</a>、<a href="https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook" target="_blank">Charlene Collins Freeman Art</a></figcaption>
+
+
+<h3 id="1-5">1-5. ブラシ</h3>
+  
+同じように、ブラシダイアログにも『Filter・Editモード』切り替えUIを加えます。更に、
+
+- 『間隔』スライダーを削除
+- もしくは『サイズ』スライダーに変更します（『間隔』はサイズ調整に比べて高度かつ需要の少ない機能なので）
+
+<img src="/src/images/article/gimp-ui/ui_brushes_spacing-size.gif" alt="GIMP ブラシダイアログ (before/after)" class="mx-auto" />
+
+
+<h3 id="1-6">1-6. レイヤー</h3>
+
+一見いい感じに見えるレイヤーダイアログですが…  
+なぜだかプルダウンメニューのこれがWindows Updateのアイコンにしか見えません。  
+あと、ウィルバー君は何故こんなことに…？
+
+<img src="/src/images/article/gimp-ui/ui_layers_before_icons.webp" alt="GIMP レイヤーダイアログ ドロップダウンアイコン" class="mx-auto" />
+
+
+真面目に説明すると、このアイコンはレイヤーのモードを『標準』または『レガシー』に切り替えるためのものです。
+
+<img src="/src/images/article/gimp-ui/ui_layers_legacy.webp" alt="GIMP レガシーレイヤーモード" class="mx-auto" />
+
+
+ただ私には、レガシーモードが標準を退いて7年が経った今、この切り替えスイッチが目立つ必要性が感じられません。  
+互換性を保つのなら、切り替え機能は残しつつ後方（メニュー内）に追いやってしまうのはどうでしょう。  
+ここでは仮に『モードグループ』と呼ぶことにします。
+
+<img src="/src/images/article/gimp-ui/ui_layers_after_menu.webp" alt="GIMP レイヤーモードメニュー （リデザイン）" class="mx-auto" />
+
+
+<h3 id="1-7">1-7. メニュー</h3>
+<span class="caption">（この項は長くて複雑なので、動画からいくつか抜粋するにとどめました。全項目は<a href="https://youtu.be/wjA35TbMfLQ" target="_blank">こちらよりご覧いただけます</a>。）</span>
+
+#### 1-7-1. リスト内のアイコン：ファイル＆編集  
+
+リスト内のアイコンには重要な機能を探しやすくする効果があります。  
+とはいえ、『スクリーンショット』（から画像を生成する）がそんなに使われる機能だとは考えにくいです。  
+むしろ全体の統一感を台無しにしているような…？  
+
+『○○で塗りつぶす』についても同じことが言えます。  
+（これらはよく使われる機能かもしれませんが、選択色やパターンの頻繁な変更がむしろ頭を疲れさせてしまう気がするので、ここでは削除します）
+
+
+<div class="image-grid !grid-cols-2 place-items-center w-fit mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_nav_icon-1.webm"
+            type="video/webm"
+        />
+    </video>
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/ui_nav_icon-2.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>リスト内のアイコン例</figcaption>
+
+#### 1-7-2. カテゴリー違いと重複項目：選択＆表示  
+
+##### 選択  
+
+- 『Float』の中身はコピー・貼り付けに関する操作ばかりなので、『編集』に移動します。
+  
+##### 表示  
+
+- 『ナビゲーションウインドウ』は『ウィンドウ > ドッキング可能なダイアログ』に同じものがあるので削除します。
+- 代わりに、『画像 > ガイド』をこちらへ移動させます。
+
+
+<div class="image-grid place-items-center w-fit mx-auto">
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/menu_edit-select.webm"
+            type="video/webm"
+        />
+    </video>
+    <video autoplay loop muted>
+        <source
+            src="/src/images/article/gimp-ui/menu_view_nav.webm"
+            type="video/webm"
+        />
+    </video>
+</div>
+<figcaption>カテゴリー違いと重複項目</figcaption>
+
+#### 1-7-3. 標準用語の使用：画像＆レイヤー  
+
+- 画像処理における『Encoding（エンコーディング）』を指す用語として一般的に使われるのは『Color Depth（ビット数、ビット深度）』のようです。
+- 『Stack（重なり）』についても、『Layer Stack（レイヤーの重なり）』や『Layer Order（レイヤーの順序）』の方がより分かりやすいように思います。<br/><span class="caption">補足：『Stack（スタック）』はレイヤーの重なりや順序に近い概念を表すエンジニア用語として広く使われているそうです。</span>
+
+<div class="image-grid w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/menu_image_encoding.webp" alt="GIMP メニュー Encoding" />
+    <img src="/src/images/article/gimp-ui/menu_layer_stack.webp" alt="GIMP メニュー Stack" />
+</div>
+<figcaption>一般的な画像処理ソフトユーザーに馴染み深い用語を使用していない例</figcaption>
+
+#### 1-7-4. リストの順序：ウィンドウ＆ヘルプ  
+
+##### ウィンドウ  
+『ドッキング可能なダイアログ』内の項目は、似たような機能ごとにまとめると探しやすくなるかもしれません。  
+
+##### ヘルプ  
+リンク先が同じページの項目が多すぎて戸惑います…。ここは『ユーザーマニュアル』1つで十分なのでは。  
+そして『GIMP Online』も対象の読者層ごとにグループ分けすればもっと整理されそうです。
+
+<div class="image-grid w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/menu_windows_reorder.gif" alt="GIMP ウィンドウメニュー リスト整理案" />
+    <img src="/src/images/article/gimp-ui/menu_help_reorder.gif" alt="GIMP ヘルプメニュー リスト整理案" />
+</div>
+<figcaption>整理されていないメニューたち。<br/>
+1枚目（After）上から：情報、レイヤー操作、フォントと色、描画、編集、アセットと作業履歴、ユーティリティ<br/>
+2枚目（After）上から：全体向け、デベロッパー向け</figcaption>
+
+
+<h2 id="2">不明確なプロジェクトの方向性とターゲット層の不在</h2>
+改善案を出すうち、GIMP最大の問題は『ターゲット層の不在』にあるのではと考えるようになりました。  
+「敵を知り、己を知れば、百戦して殆うからず」と言われるように、まず誰を対象とするかをはっきりさせることが、プロジェクトの向かう方向性や目標、そして優先順位を決めるのに不可欠なはずです。   
+
+公式サイトをざっくり要約すると、GIMPは『みんなのための』ツールだそうですが、個人的にはそうではないと感じています。  
+「業界標準や親しまれているやり方は気にしない」と言い切っていますし。 
+
+
+<div class="image-grid place-items-center w-fit mx-auto">
+    <img src="/src/images/article/gimp-ui/2_gimp_intro.webp" alt="GIMP 公式見解" />
+    <img src="/src/images/article/gimp-ui/2_gimp_faq.webp" alt="GIMP 公式見解" />
+</div>
+<figcaption>「Developers stick to what people know（デベロッパー達は人々が知っている形に固執する）」の部分が上で取り上げた『Stack』問題を思い起こさせます。<br/>FOSS開発者とデザイナー（典型的Adobeユーザー）間の常識のミスマッチというやつかもしれません…。</figcaption>
+
+もちろん、標準的なやり方がいつも最高のやり方だとは限りません。  
+でも、実体のない書類という概念が新しかった時代に、何が世界全体へのコンピューター技術の普及を後押ししたのかを考えてみるとどうでしょう？  
+
+大抵の場合、標準にはそうなるだけの理由があるものです。  
+他のやり方を提案したいのなら、自分視点からではなく相手の立場に立って提案しないと難しい。  
+
+だからこそ、その「相手」とは誰なのかが分からなくてはいけない。  
+
+<img src="/src/images/article/gimp-ui/ui_metaphor_mac-os.webp" alt="世界全体へのコンピューター技術の普及を後押ししたオフィス文具のメタファー" class="mx-auto" />
+<figcaption>分かりやすいメタファーなのがポイント</figcaption>
+
+
+## まとめ  
+
+そういった決め事もGIMP開発チーム次第ではありますが、それでも考えを発信するのは大事だと思っています。  
+開発に参加する手もあるし、フィードバックしたり、チュートリアル動画を作ったり、自分でWikiを作ってしまうのもあり。  
+
+そうすれば、有用だけど難しすぎるこのツールの学習曲線も多少は緩やかになるのかなぁと思います。  
+もしかしたら、そうして発信した『より良いやり方』が開発者の注目を集めるかもしれないですし。
+
+
+## 出典  
+
+- GIMP: <a href="https://www.gimp.org/" target="_blank">{`https://www.gimp.org/`}</a>
+- EGA palette:
+	- <a href="https://www.gimpusers.com/forums/gimp-user/17474-gimp-s-ega-default-palette" target="_blank">{`https://www.gimpusers.com/forums/gimp-user/17474-gimp-s-ega-default-palette`}</a>
+    - <a href="https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter" target="_blank">{`https://en.wikipedia.org/wiki/Enhanced_Graphics_Adapter`}</a>
+- National colors: <a href="https://en.wikipedia.org/wiki/National_colours" target="_blank">{`https://en.wikipedia.org/wiki/National_colours`}</a>
+- GIMP Color Palettes: <a href="https://robert-96.github.io/gimp-color-palettes/" target="_blank">{`https://robert-96.github.io/gimp-color-palettes/`}</a>
+- Watercolor palette: <a href="https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook" target="_blank">{`https://charlenecollinsfreeman.com/blog-montauk/2017/3/6/my-color-sketchbook`}</a>
+- "Introducing Lisa" ad: <a href="https://guidebookgallery.org/ads/magazines/lisa/introducinglisa" target="_blank">{`https://guidebookgallery.org/ads/magazines/lisa/introducinglisa`}</a>
