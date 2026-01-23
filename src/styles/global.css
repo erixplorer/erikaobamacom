@@ -222,7 +222,6 @@ a {
   }
 }
 
-caption *, 
 figcaption, 
 figcaption *, 
 .caption,
@@ -375,7 +374,6 @@ h1 {
 }
 
 .heading-row {
-  
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -454,7 +452,6 @@ li {
       transition: all 0.3s ease-in-out;
       @apply
       md:[width:calc(100vw/3)];
-      /* md:[max-width:calc(64rem/3)]; */
     } 
 
     .article-title {
@@ -484,7 +481,6 @@ li {
     } 
 
     .postinfo {
-      /* flex: 2; */
       row-gap: var(--m-sm);
       place-self: start;
       @apply
@@ -975,7 +971,8 @@ article {
   :is(h2,h3,h4,h5,h6) + h3, 
   :is(h2,h3,h4,h5,h6) + h4, 
   :is(h2,h3,h4,h5,h6) + h5, 
-  :is(h2,h3,h4,h5,h6) + h6 {
+  :is(h2,h3,h4,h5,h6) + h6, 
+  div.tags {
     padding-top: unset;
   }
 
@@ -1022,6 +1019,10 @@ article a,
   width: fit-content;
   @apply
   md:[grid-template-columns:repeat(2,minmax(0,1fr))];
+
+  a {
+    display: inline;
+  }
 
   img {
     border-radius: unset;
@@ -1143,22 +1144,6 @@ footer {
 /*========================================
     Animations
 ======================================== */
-
-.fade-down {
-  @apply
-  animate-fade-down 
-  animate-once;
-}
-.fade-left {
-    @apply
-    animate-fade-left 
-    animate-once;
-}
-.fade-right {
-    @apply
-    animate-fade-right 
-    animate-once;
-}
 
 @keyframes button-down {
   100% {
