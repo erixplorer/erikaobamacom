@@ -1004,6 +1004,7 @@ article {
 
 
 article a,
+article a *,
 .alink {
     text-decoration: underline;
     color: var(--ac1);

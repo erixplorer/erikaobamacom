@@ -1,0 +1,158 @@
+---
+layout: /src/layouts/MarkdownPostLayoutMdx.astro
+locale: 'ja'
+slug: 'the-new-affinity-problems'
+title: "Affinity V3が非西洋圏ユーザーにとって問題だらけな件"
+type: 'article'
+category: 'article'
+pubDate: 2026-03-06
+tags: ["UI", "UX", "文化", "言語", "日本語"]
+description: "新しいAffinityがデザイン業界を制覇するという噂があるけれど、そうなるには解決すべき問題（地域限定だけど致命的）があるよ…という話。"
+image:
+    url: '/src/images/article/7_affinity-v3/thumb.webp'
+    alt: "Affinity V3が非西洋圏ユーザーにとって問題だらけな件"
+    hero: false
+---
+
+import EmbedYouTube from '/src/components/parts/EmbedYouTube.astro';
+
+*※この記事は以下のYouTube動画のダイジェスト版です。*  
+<EmbedYouTube vid="AFb2X5gQmqw" />
+
+## 1. Affinity完全無料化の率直な感想
+
+数か月前、<a href="https://www.affinity.studio/ja_jp" target="_blank">Affinity</a>が完全無料化されました。これを聞いてまず思ったのが  
+「クリエイティブ業界を制覇するのは無理でしょ…。特に日本では、縦書き機能を追加しない限り厳しい。」  
+ということ。
+
+<img src="/src/images/article/7_affinity-v3/1_vertical-writing-use-cases-in-japan.webp" alt="日本国内の縦書き使用例" />
+
+といっても、AffinityはV2のユーザビリティが素晴らしかったので個人的にはお気に入りです。一方のCanvaはUXがむしろ戸惑いの元ですし、必要な機能も揃っていないと感じます。ただし、こちらは以前から縦書きに対応していました。
+
+そんなAffinityとCanvaが連携したというのだから、試さない手はありません。  
+もしかしたら縦書きできるかも………  
+
+**………無理だった🤦🏻‍♀️**
+
+<video autoplay loop muted>
+  <source
+    src="/src/images/article/7_affinity-v3/2_affinity-vertical-writing-test.webm"
+    type="video/webm"
+  />
+</video>
+
+
+## 2. 実際のところ
+
+Affinityがクリエイティブ業界を席巻するのが難しい理由はいくつかあります。
+
+### 縦書き非対応
+
+これが一番の理由というわけではありませんが、やはり重大なポイントです。
+
+<a href="https://realsound.jp/tech/2023/09/post-1446012.html" target="_blank">2023年のAffinity CEOへのインタビュー</a>によると、近いうちに縦書き機能が搭載されるのはほぼ確実だったようです。
+
+ちなみにその頃、日本のユーザーたちは
+- <a href="https://s-suzume.booth.pm/" target="_blank">縦書き専用フォント</a>と変換用の<a href="https://gist.github.com/fdiary/5dbade3da21bed6d7a8e0abf8ff697b8" target="_blank">FontForgeスクリプト</a>の開発
+- 書式を<a href="https://cs5.xyz/blog/2019/09/affinityv4.html" target="_blank">手動で調整する</a>
+
+といった回避策を講じていました。
+
+とはいえ、こうした方法は一時しのぎにすぎません。  
+実用に耐えうる縦書き機能を開発するには<a href="https://www.w3.org/TR/jlreq/?lang=ja" target="_blank">膨大な量の文字組み規則</a>に従う必要があります。とても骨の折れる作業ですし、大企業にとっても簡単なことではありません。
+
+
+<img src="/src/images/article/7_affinity-v3/3_affinity-ceo-interview-2023.webp" alt="Affinityの縦書きテキストエンジン開発（2023年のCEOインタビュー）" />
+<figcaption>『縦書きや「ルビ」などをサポートできるよう、現在テキストエンジンの開発を進めています。』</figcaption>
+
+<div class="image-grid !grid-cols-3 md:!grid-cols-3 place-items-center mx-auto">
+    <img src="/src/images/article/7_affinity-v3/4_affinity-vertical-text-workaround.webp" alt="Affinityで縦書きを使う方法" />
+    <img src="/src/images/article/7_affinity-v3/5_affinity-vertical-text-workaround.webp" alt="Affinityで縦書きを使う方法" />
+    <img src="/src/images/article/7_affinity-v3/6_affinity-vertical-text-workaround.webp" alt="Affinityで縦書きを使う方法" />
+</div>
+<figcaption>Affinityで縦書きを使うための回避策</figcaption>
+
+<img src="/src/images/article/7_affinity-v3/7_japanese-typography-rules.webp" alt="日本語タイポグラフィの基本ルール" />
+<figcaption>日本語タイポグラフィの基本ルール</figcaption>
+
+
+### RTL（右横書き）非対応
+
+Affinityは縦書きだけでなく、<a href="https://forum.affinity.serif.com/index.php?/search/&q=vertical%20writing" target="_blank">RTL（右横書き）</a>にも対応していません。こちらも長年リクエストされ続けているものの、今のところ何の進展もないようです。  
+実際、UIもRTL表示に非対応です。
+
+<img src="/src/images/article/7_affinity-v3/8_affinity-rtl-compatibility.webp" alt="Affinity公式フォーラムに投稿されたRTL互換性問題" />
+<figcaption>RTL互換性もまた大きな問題です</figcaption>
+
+### パフォーマンス問題
+
+タイポグラフィ関連ではありませんが、3つのアプリケーションを1つにまとめた弊害がRAM消費量に表れていました。一言で言うと、Affinityは簡単なタスク処理でもIllustratorとは比べ物にならない量のメモリを消費してしまいます。
+
+<img src="/src/images/article/7_affinity-v3/9_affinity-v3-performance-issue.webp" alt="Affinity V3 パフォーマンス問題" />
+
+
+### ターゲット層（地域別）
+
+欧米ではフリーランスやスモールビジネスの選択肢として市民権を得ているAffinityですが、その傾向は今もあまり変わっていないようです。  
+プロのクリエイター達は主に<a href="https://www.reddit.com/r/graphic_design/comments/1pwu0z9/should_i_switch_to_affinity_in_2026/" target="_blank">外部と連携しないフリーランスに向けて</a>おすすめしています。
+
+そこで「もしかしたらロシアでは状況が違うかもしれない。Adobeの制裁が何年も続いているし…？」と思ったのですが、こちらも全くそんなことはありませんでした。  
+やはり<a href="https://www.youtube.com/watch?v=Pmvea2e8WnI&t=13114" target="_blank">同じ理由でAdobeがおすすめされています</a>。
+
+（ところで私は簡単なロシア語なら理解できるのですが、皆どうしてAdobeを使い続けられているのかがどうにも理解できていません…。もし詳しい方がいらっしゃいましたら教えてください。）
+
+日本の状況はというと、<a href="https://cad-kenkyujo.com/affinity/" target="_blank">YouTuberやブロガー向けのツールとして扱われている</a>感が強いような気がします。  
+Canvaからステップアップしたい人や、文字入れは稀にしかしない人向けですね。
+
+
+## 3. 大事なこと：デザイン業務の特性
+
+### 協業・共同作業（コラボレーション）
+
+パフォーマンス問題は一時的でも、タイポグラフィ問題は地域限定でも、デザイン業務の特性というものは簡単に変えられるものではありません。AIでさえもです。  
+なぜなら、デザイン案件は協業や共同作業（コラボレーション）ありきなものが特に多いから。  
+そして現代のコラボレーションにはテクニカル面の互換性が必須です。
+
+<img src="/src/images/article/7_affinity-v3/10_collaborative-design-workflow.webp" alt="デザイン案件の共同作業ワークフロー" />
+
+Adobe Creative Cloudの登場前には、今よりも多くの<a href="https://en.wikipedia.org/wiki/Comparison_of_desktop_publishing_software" target="_blank">「業界標準」デザインツール</a>が使われていました。  
+業界標準の数が多かった分、互換性問題もより多く発生していました。  
+たとえAdobeしか使わない・対応しないと決め込んだとしても、バージョン間の互換性問題から完全に逃げることはできなかったのです。
+
+<img src="/src/images/article/7_affinity-v3/11_adobe-version-compatibility.webp" alt="Adobeのバージョン別互換性" />
+<figcaption>出典：<a href="https://www.graphic.jp/direct_upload" target="_blank">印刷の通販グラフィック</a></figcaption>
+
+とはいえ、バージョン間の互換性はソフトウェア間の互換性に比べればかなり小さな問題です。加えて<a href="https://webdesignerdepot.com/adobe-creative-suite-5-brings-sexy-back/" target="_blank">広いクリエイティブ分野をカバーしていた</a>Adobeスイートは、実際に当時一番便利な選択肢でした。
+
+そして2013年、AdobeはCreative Cloudをリリースによって互換性問題に終止符を打ち、市場を**完全に**制覇……とはいきませんでした。
+
+
+### 競合が勝ったケース
+
+一例を挙げると、AdobeはWeb業界はあまり制覇できていません。  
+
+- <a href="https://www.figma.com/ja-jp/" target="_blank">Figma</a>は<a href="https://helpx.adobe.com/jp/support/xd.html" target="_blank">XD</a>をかなり昔に破っています。  
+    今ではFigma＝Web系デザイナーの遭遇確率100%のツールです。
+- <a href="https://code.visualstudio.com/" target="_blank">Visual Studio Code</a>が普及しだした頃には<a href="https://brackets.io/" target="_blank">Brackets</a>も使われていました。今ではVS Codeの圧勝です。
+- 今の<a href="https://www.adobe.com/jp/products/dreamweaver.html" target="_blank">Dreamweaver</a>は<a href="https://github.com/?locale=ja" target="_blank">GitHub</a>と連携できますが、そのワークフロー自体が今時のWebサイトプラットフォームやジェネレーターに取って代わられてしまったように思うのは私だけでしょうか…？
+
+短い間に様々なツールが現れては消えゆくのがWeb業界らしさといえばそれまでですが、ここでのポイントは「それぞれの業界にはそれぞれのニーズや標準がある」ということ。  
+見ての通り、3D業界も似たような感じです。
+
+<img src="/src/images/article/7_affinity-v3/12_standard-tools-by-industry.webp" alt="業界ごとの標準ツール" />
+
+
+## まとめ
+
+最近は何でもかんでも「革命的イノベーション」か「今ある『安定』への脅威（仕事やワークフローなど）」のどちらかとして捉えられがちですが、ちょっと立ち止まって、似たような変化が数十年毎に起きていることに気づいてほしいと思うことが多々あります。
+
+それに「斬新な新機能ひとつで瞬時に業界全体を覆す」のはそんなにあり得る話なのでしょうか？
+もちろん時にはそういったことも起こりますが、それはそうなるだけの十分な理由と人々の乗り換えを後押しする根拠があってからこそです。
+
+<img src="/src/images/article/7_affinity-v3/13_product-lifecycle.webp" alt="プロダクトライフサイクル" />
+<figcaption>出典：<a href="https://uxdesign.cc/four-rules-for-how-design-influences-technology-44b2c1948135" target="_blank">Four rules for how design influences technology</a></figcaption>
+
+なので、パニックに陥るより、どんな変化にも対応できる柔軟な思考や使い回しが効くスキルの取得に目を向けたらどうかな？というのが私の考えです。
+これは仕事だけでなくプライベートでも同じ。（どちらにしろAIの波は来ているので…）
+
+そうすれば落ち着いて、近い将来にも役立つ、価値を発揮する物事に取り組めるのではないかなと思います。
