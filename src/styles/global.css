@@ -600,6 +600,10 @@ blockquote, pre {
 
 blockquote {
   border-left: var(--m-xs) var(--ac1) solid;
+
+  p:last-child{ 
+    padding-bottom: 0;
+  }
 }
 
 pre {
