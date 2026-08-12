@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 
+import node from '@astrojs/node';
 import preact from '@astrojs/preact';
 import pagefind from "astro-pagefind";
 import icon from "astro-icon";
@@ -10,6 +11,9 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
+    adapter: node({
+      mode: 'standalone',
+    }),
   integrations: [
     preact(), 
     pagefind(), 

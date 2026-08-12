@@ -29,8 +29,6 @@
   --pagefind-ui-text: var(--text) !important;
   --pagefind-ui-border: var(--bg3) !important;
   --pagefind-ui-background: var(--bg4) !important;
-  .pagefind-ui__button:hover {border-color: var(--ac1) !important;}
-  .pagefind-ui__search-input:focus-visible {border: var(--ac1) !important;}
 }
 
 :root[data-theme="system"] {
@@ -130,6 +128,12 @@ html {
     --f-xl: calc(var(--f-lg)*var(--ratio-sm));
     --f-2xl: calc(var(--f-xl)*var(--ratio-sm));
     --f-3xl: calc(var(--f-2xl)*var(--ratio-sm));
+    --f-4xl: calc(var(--f-3xl)*var(--ratio-sm));
+    --f-5xl: calc(var(--f-4xl)*var(--ratio-sm));
+    --f-6xl: calc(var(--f-5xl)*var(--ratio-sm));
+    --f-7xl: calc(var(--f-6xl)*var(--ratio-sm));
+    --f-8xl: calc(var(--f-7xl)*var(--ratio-sm));
+    --f-9xl: calc(var(--f-8xl)*var(--ratio-sm));
 
     /* == line-height == */
     --line-sm: calc(var(--line-base)/var(--ratio-xs));
@@ -149,7 +153,7 @@ html {
   font-style: normal;
   font-display: swap;
   font-weight: 700;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/ubuntu-sans:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/ubuntu-sans:vf@latest/latin-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -171,7 +175,7 @@ html {
   font-style: normal;
   font-display: swap;
   font-weight: 400 700;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2) format('woff2-variations');
+  src: url('https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2') format('woff2-variations');
   unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
 }
 
@@ -232,8 +236,56 @@ figcaption *,
   font-style: italic;
 }
 
+.font-xs {
+  font-size: var(--f-xs);
+  line-height: var(--line-base);
+}
 .font-sm {
   font-size: var(--f-sm);
+  line-height: var(--line-base);
+}
+.font-base {
+  font-size: var(--f-base);
+  line-height: var(--line-base);
+}
+.font-lg {
+  font-size: var(--f-lg);
+  line-height: var(--line-base);
+}
+.font-xl {
+  font-size: var(--f-xl);
+  line-height: var(--line-base);
+}
+.font-2xl {
+  font-size: var(--f-2xl);
+  line-height: var(--line-base);
+}
+.font-3xl {
+  font-size: var(--f-3xl);
+  line-height: var(--line-base);
+}
+.font-4xl {
+  font-size: var(--f-4xl);
+  line-height: var(--line-base);
+}
+.font-5xl {
+  font-size: var(--f-5xl);
+  line-height: var(--line-base);
+}
+.font-6xl {
+  font-size: var(--f-6xl);
+  line-height: var(--line-base);
+}
+.font-7xl {
+  font-size: var(--f-7xl);
+  line-height: var(--line-base);
+}
+.font-8xl {
+  font-size: var(--f-8xl);
+  line-height: var(--line-base);
+}
+.font-9xl {
+  font-size: var(--f-9xl);
   line-height: var(--line-base);
 }
 
@@ -301,7 +353,7 @@ stacked-alpha-video video {
 
 /* == Buttons == */
 
-.button {
+button, .button {
   display: block;
   width: fit-content;
   margin: var(--m-sm) auto;
@@ -342,6 +394,60 @@ stacked-alpha-video video {
 }
 
 
+/* == Forms == */
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--m-xs);
+  width: 100%;
+  @apply
+  md:w-auto;
+
+  label {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: var(--m-sm);
+    font-size: var(--f-base);
+    line-height: var(--line-base);
+
+    span {
+      width: 10ch;
+      margin-right: var(--m-sm);
+    }
+
+    input, textarea {
+      display: block;
+      width: 100%;
+      max-width: 64ch;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--neutral);
+      font-size: var(--f-base);
+      line-height: var(--line-base);
+      padding: var(--m-sm) var(--m-sm);
+
+      @apply
+      md:min-w-[48ch];
+
+      &:focus {
+        outline: none;
+        border-color: var(--ac1);
+        box-shadow: 0 0 0 2px var(--ac1);
+      }
+    }
+
+    textarea {
+      height: 12em;
+      height: 8rlh;
+    }
+  }
+}
+
+.pagefind-ui__form input:active, 
+.pagefind-ui__form input:hover, 
+.pagefind-ui__form input:focus-visible {
+  border-color: var(--ac1) !important;
+}
 
 
 /*========================================

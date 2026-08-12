@@ -13,8 +13,8 @@ const { frontmatter } = Astro.props;
         {frontmatter.tags.map((tag: string) => (
           <span class="tag"><a href={ Astro.currentLocale === "ja" ? `/ja/article/tags/${tag}` : `/article/tags/${tag}`}>#{tag}</a></span>
         ))}
-        </p>
       </div>
+        </p>
     </div>
 
     { frontmatter.image.hero === true ? 
