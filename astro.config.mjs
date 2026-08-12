@@ -1,19 +1,16 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-
-import node from '@astrojs/node';
 import preact from '@astrojs/preact';
 import pagefind from "astro-pagefind";
 import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
-import tailwindcss from "@tailwindcss/vite"; 
+import tailwindcss from "@tailwindcss/vite";
+import node from "@astrojs/node";
 
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
-    adapter: node({
-      mode: "standalone"
-    }),
+
   integrations: [
     preact(), 
     pagefind(), 
@@ -30,10 +27,12 @@ export default defineConfig({
       // gfm: false,
     }),
   ],
+
   vite: { 
     plugins: [
       tailwindcss(),
     ]},
+
   i18n: {
     locales: ["en", "ja"],
     defaultLocale: "en",
@@ -46,6 +45,7 @@ export default defineConfig({
       ja: "en",
     }
   },
+
   markdown: {
     shikiConfig: {
       themes: {
@@ -53,5 +53,9 @@ export default defineConfig({
         dark: 'catppuccin-macchiato',
       },
     },
-  }
+  },
+
+  adapter: node({
+    mode: "standalone"
+  })
 });
