@@ -10,6 +10,14 @@ import node from "@astrojs/node";
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
+  output: "static",
+  security: {
+    checkOrigin: false
+  },
+
+  adapter: node({
+    mode: "standalone"
+  }),
 
   integrations: [
     preact(), 
@@ -53,9 +61,5 @@ export default defineConfig({
         dark: 'catppuccin-macchiato',
       },
     },
-  },
-
-  adapter: node({
-    mode: "standalone"
-  })
+  }
 });
