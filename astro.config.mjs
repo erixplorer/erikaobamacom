@@ -12,7 +12,7 @@ export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
     adapter: node({
-      mode: 'standalone',
+      mode: "standalone"
     }),
   integrations: [
     preact(), 
