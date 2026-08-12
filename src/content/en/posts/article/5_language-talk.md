@@ -20,8 +20,8 @@ Kanji are, in its core, pictures.
 When I watched <a href="https://www.youtube.com/watch?v=JOvbeeFLZ2M" target="_blank">YouTube short by Real Real Japan</a> that made a pun with two kanjis look like Tetris, I thought, "Oh, yeah. I can make it with the actual characters (not symbols) with CSS!"
 
 <div id="dekoboko" class="size-fit flex mx-auto mt-[5rem] leading-none" style="text-align: center;">
-  <div class="text-8xl green anim-deko">凸</div>
-  <div class="text-8xl red anim-boko">凹</div>
+  <div class="font-8xl green anim-deko">凸</div>
+  <div class="font-8xl red anim-boko">凹</div>
 </div>
 <p class="text-center font-bold pb-1"><span class="green">deko</span> <span class="red">boko</span><br><span class="text-sm">(bump, bumpy)</span></p>
 <p class="text-center text-sm">Inspired by <a href="https://www.youtube.com/watch?v=JOvbeeFLZ2M" target="_blank">Real Real Japan</a></p>
@@ -34,8 +34,8 @@ Here's how you can play with them, but...
 
 ``` html
 <div id="dekoboko" class="size-fit flex mx-auto mt-[5rem] leading-none" style="text-align: center;">
-  <div class="text-8xl green anim-deko">凸</div>
-  <div class="text-8xl red anim-boko">凹</div>
+  <div class="font-8xl green anim-deko">凸</div>
+  <div class="font-8xl red anim-boko">凹</div>
 </div>
 ```
 
@@ -71,16 +71,14 @@ Here's how you can play with them, but...
 }
 @keyframes anim-deko {
     45% {transform: translate(0,0);}
-    55%, 
-    100% {transform: translate(.5em, 0);}
+    55%, 100% {transform: translate(.5em, 0);}
 }
 @keyframes anim-boko {
     20% {rotate: 0deg; transform: translate(0,0);}
     30% {rotate: -180deg; transform: translate(0,0);}
-    40%, 
-    45% {rotate: -180deg; transform: translate(0em,1em);}
-    55% {rotate: -180deg; transform: translate(.49em,1em);}
-    80%, 100% {rotate: -180deg; transform: translate(.49em,.37em);}
+    40%, 45% {rotate: -180deg; transform: translate(0em,1em);}
+    55% {rotate: -180deg; transform: translate(.5em,1em);}
+    80%, 100% {rotate: -180deg; transform: translate(.5em,.5em);}
 }
 ```
 </div>
@@ -172,16 +170,14 @@ but this, as she cuts a lot of solid things.
     }
     @keyframes anim-deko {
         45% {transform: translate(0,0);}
-        55%, 
-        100% {transform: translate(.5em, 0);}
+        55%, 100% {transform: translate(.5em, 0);}
     }
     @keyframes anim-boko {
         20% {rotate: 0deg; transform: translate(0,0);}
         30% {rotate: -180deg; transform: translate(0,0);}
-        40%, 
-        45% {rotate: -180deg; transform: translate(0em,1em);}
-        55% {rotate: -180deg; transform: translate(.49em,1em);}
-        80%, 100% {rotate: -180deg; transform: translate(.49em,.37em);}
+        40%, 45% {rotate: -180deg; transform: translate(0em,1em);}
+        55% {rotate: -180deg; transform: translate(.5em,1em);}
+        80%, 100% {rotate: -180deg; transform: translate(.5em,.5em);}
     }
 
     td img {

@@ -20,8 +20,8 @@ tags: ["デザイン", "文化", "言語", "日本語", "中国語", "コーデ�
 <a href="https://www.youtube.com/watch?v=JOvbeeFLZ2M" target="_blank">Real Real Japanのテトリスに見える漢字ネタYouTubeショート</a>を見て「あ、これ、CSSを使えば（画像ではなく）文字で表現できるやつだ」と遊んでみた結果がこちら。
 
 <div id="dekoboko" class="size-fit flex mx-auto mt-[5rem] leading-none" style="text-align: center;">
-  <div class="text-8xl green anim-deko">凸</div>
-  <div class="text-8xl red anim-boko">凹</div>
+  <div class="font-8xl green anim-deko">凸</div>
+  <div class="font-8xl red anim-boko">凹</div>
 </div>
 <p class="pt-1 text-center text-sm">元ネタ：<a href="https://www.youtube.com/watch?v=JOvbeeFLZ2M" target="_blank">Real Real Japan</a></p>
 
@@ -33,8 +33,8 @@ tags: ["デザイン", "文化", "言語", "日本語", "中国語", "コーデ�
 
 ``` html
 <div id="dekoboko" class="size-fit flex mx-auto mt-[5rem] leading-none" style="text-align: center;">
-  <div class="text-8xl green anim-deko">凸</div>
-  <div class="text-8xl red anim-boko">凹</div>
+  <div class="font-8xl green anim-deko">凸</div>
+  <div class="font-8xl red anim-boko">凹</div>
 </div>
 ```
 
@@ -70,16 +70,14 @@ tags: ["デザイン", "文化", "言語", "日本語", "中国語", "コーデ�
 }
 @keyframes anim-deko {
     45% {transform: translate(0,0);}
-    55%, 
-    100% {transform: translate(.5em, 0);}
+    55%, 100% {transform: translate(.5em, 0);}
 }
 @keyframes anim-boko {
     20% {rotate: 0deg; transform: translate(0,0);}
     30% {rotate: -180deg; transform: translate(0,0);}
-    40%, 
-    45% {rotate: -180deg; transform: translate(0em,1em);}
-    55% {rotate: -180deg; transform: translate(.49em,1em);}
-    80%, 100% {rotate: -180deg; transform: translate(.49em,.37em);}
+    40%, 45% {rotate: -180deg; transform: translate(0em,1em);}
+    55% {rotate: -180deg; transform: translate(.5em,1em);}
+    80%, 100% {rotate: -180deg; transform: translate(.5em,.5em);}
 }
 ```
 </div>
@@ -180,16 +178,14 @@ tags: ["デザイン", "文化", "言語", "日本語", "中国語", "コーデ�
     }
     @keyframes anim-deko {
         45% {transform: translate(0,0);}
-        55%, 
-        100% {transform: translate(.5em, 0);}
+        55%, 100% {transform: translate(.5em, 0);}
     }
     @keyframes anim-boko {
         20% {rotate: 0deg; transform: translate(0,0);}
         30% {rotate: -180deg; transform: translate(0,0);}
-        40%, 
-        45% {rotate: -180deg; transform: translate(0em,1em);}
-        55% {rotate: -180deg; transform: translate(.49em,1em);}
-        80%, 100% {rotate: -180deg; transform: translate(.49em,.37em);}
+        40%, 45% {rotate: -180deg; transform: translate(0em,1em);}
+        55% {rotate: -180deg; transform: translate(.5em,1em);}
+        80%, 100% {rotate: -180deg; transform: translate(.5em,.5em);}
     }
 
     td img {
