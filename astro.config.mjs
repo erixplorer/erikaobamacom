@@ -5,19 +5,11 @@ import pagefind from "astro-pagefind";
 import icon from "astro-icon";
 import mdx from "@astrojs/mdx";
 import tailwindcss from "@tailwindcss/vite";
-// import node from "@astrojs/node";
 
 export default defineConfig({
   site: 'https://erikaobama.com',
   base: '/',
   output: "static",
-  // security: {
-  //   checkOrigin: false
-  // },
-
-  // adapter: node({
-  //   mode: "standalone"
-  // }),
 
   integrations: [
     preact(), 
@@ -61,5 +53,6 @@ export default defineConfig({
         dark: 'catppuccin-macchiato',
       },
     },
-  }
+  },
+
 });
