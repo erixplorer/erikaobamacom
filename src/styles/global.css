@@ -1,7 +1,6 @@
 @import "tailwindcss";
 @plugin "tailwindcss-animated";
 
-
 /*========================================
     Setup: Color Scheme
 ======================================== */
@@ -557,7 +556,7 @@ li {
       height:auto;
       transition: all 0.3s ease-in-out;
       @apply
-      md:[width:calc(100vw/3)];
+      md:w-[calc(100vw/3)];
     } 
 
     .article-title {
@@ -577,7 +576,7 @@ li {
     }   
     .image {
       @apply
-      md:flex-[1];
+      md:flex-1;
     }
   
     img {
@@ -590,7 +589,7 @@ li {
       row-gap: var(--m-sm);
       place-self: start;
       @apply
-      md:flex-[3];
+      md:flex-3;
       .article-title {
         font-size: var(--f-lg);
       }
@@ -1129,7 +1128,7 @@ article a *,
   gap: var(--m-base);
   width: fit-content;
   @apply
-  md:[grid-template-columns:repeat(2,minmax(0,1fr))];
+  md:grid-cols-2;
 
   a {
     display: inline;
