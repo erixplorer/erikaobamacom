@@ -698,6 +698,9 @@ blockquote, pre, code {
   background: var(--bg3);
   border-radius: var(--r-2xs);
 }
+pre code {
+  background: unset;
+}
 blockquote, pre {
   padding: var(--m-sm);
   margin-bottom: var(--m-base);

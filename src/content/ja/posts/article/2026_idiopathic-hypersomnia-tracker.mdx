@@ -1,0 +1,502 @@
+---
+layout: /src/layouts/MarkdownPostLayoutMdx.astro
+locale: 'ja'
+slug: 'idiopathic-hypersomnia-tracker'
+title: "謎のねむねむ病（特発性過眠症）フレンドリーな記録システムを構築してみた"
+type: 'article'
+category: 'article'
+pubDate: 2026-11-02
+tags: ["特発性過眠症 " ,"ASD（自閉症スペクトラム） " ,"遂行機能障害 " ,"Obsidian " ,"バイブコーディング"]
+description: "そもそもツールやAIに「指示する動作」が困難な時の折衷策について。"
+image:
+    url: '/src/images/article/2026_idiopathic-hypersomnia-tracker/thumb.webp'
+    alt: "謎のねむねむ病（特発性過眠症）フレンドリーな記録システムを構築してみた"
+    hero: false
+---
+
+import EmbedYouTube from '/src/components/parts/EmbedYouTube.astro';
+
+大きく2つの困りごとがあります。
+
+1つ目は<a href="https://banno-clinic.biz/gifu-idiopathic-hypersomnia/" target="_blank">特発性過眠症</a>。
+夜間十分な睡眠を取っているにもかかわらず一日中耐えがたい眠気が続く、稀な病気です。[^1] 
+人間の基本機能であるはずの「起きていること」でさえも大きな壁になってしまい、私の場合、時折ゾンビの如く眠りながら歩いてしまうこともあります。
+
+目覚ましがなくても勝手に目が覚める朝型人間なのに、布団から出るのも一苦労です。
+ただ、もちろん1日の中で一番きついのは食後の眠気で、30歳過ぎに診断されるまでは、昼食を食べ終わった12:30頃〜眠気が軽くなる17:30頃まで半分寝ながらコーディングするのが日常でした。（当時の終業時間は18:30）
+
+もう一つは<a href="https://www.chamomile.jp/blog/asd-traits-children-adults" target="_blank">自閉症スペクトラム（ASD）</a>。
+よく対人関係の難しさが特徴と言われる発達障害ですが、これはASDの脳（性格ではありません）が「深く一点集中しがち」で、集中が深い分「今フォーカスしている物事から注意を逸らす・切り替えるのが難しい」という性質の現れだったりします。
+
+この深い一点集中（過集中）＆切り替えの難しさのコンボはなかなか厄介で、注意が逸れないことが高い成果に繋がることもあれば、身体のニーズさえも忘れて1つの作業を延々と続けてしまうため、夜更かし、遅刻、更には脱水症状や不眠の元になってしまうこともあります。
+
+私は時間を忘れることはあまりないのですが、よく自分で決めた制限時間を無視して何回もタイマーを延長してしまいます。それも半ば無意識に。
+粘着質な脳（繰り返しますが、性格ではありません）が、今していることに依存してしまっているわけです。やめられない止まらない的な。
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/autism_sticky-brain.webp" alt="粘着質な脳" />
+
+ちなみに、こうした切り替えの難しさは「遂行機能障害」や「実行機能障害」と呼ばれています。端的に言うと、ASDの脳は集中状態を断つのにより大きな力を要するのです。[^2]
+
+当然、この実行機能系の難しさが特発性過眠症の眠気と組み合わさると、更に厄介なことになります。
+
+## 私のニーズ
+
+特発性過眠症の「特発性」は「原因不明」という意味です。原因が分からないということは、根本的な治療法が存在しないといいうことです。症状も人によって異なります。夜間に11時間以上の睡眠が必要な人もいれば、通常の睡眠時間（7〜9時間）で事足りる人もいます。何故なのかは解っていません。
+
+ASDも同じく謎だらけです。遺伝子変異を調べた最近の研究で<a href="https://gigazine.net/news/20260905-autism-mutations-protein-networks/" target="_blank">未報告のASD関連タンパク質同士の組み合わせが1,500以上見つかった</a>ことからも、非定型発達の脳の働きはまだまだよくわからないと言えます。
+
+しかもどちらの症状・特性も社会的レッテルの元になりがちです。
+特発性過眠症は滅多に気付かれず、眠気は自己管理不足のせいと誤解されがちです。
+ASDは脳の障害（神経発達症）ですが、日本では精神障害と分類されている上、諸々のポップカルチャーのおかげで変人の代名詞にもなっています。
+
+ただ何にしても、症状をコントロールしながら生きていかなければならないことに変わりはありません。
+今服薬以外でできるのは、自分の身体の特徴を学んで理解し、なるべく症状を安定させること。
+そのために役立つのが睡眠日誌と日中の眠気ログです。
+
+### 残念だけど、AIは役に立たない
+
+ところで、行動に移せない人向けのよくあるアドバイスと言えば「ハードルを低くする」です。
+
+- 大きなプロジェクトを小さなタスクに分解する。
+- リマインダーを使う。
+- アイデアを忘れないようにメモ帳を携帯するか、喋る方が得意ならボイスノートを使う。
+- AIにサポートをお願いする。
+
+どれも有用な方法ですが、どれも能動的なアクションが必須です。
+
+そしてこの能動性こそが私には一番難しい部分で、眠すぎる時の覚醒具合はリスト内のどれをするにも不十分。たまに「自分は人型ロボットの内側から搭乗者として世界を見ているのではないか」と錯覚することもあります。 [^3] 
+
+
+<EmbedYouTube vid="VFBG_gka1iw" start={72} />
+<figurecaption>まさにこんな感じ。</figurecaption>
+
+また残念ながら、2026年時点では人の考えを読み取って入出力できるツールは存在しません。AIも過眠症に関わる実行機能のサポートには役立ちません。
+
+では具体的に何ができるのか？
+
+## 試してみたこと
+
+### 完璧な解決策はないけれど、ハードルを低くすることならできる
+
+答えはシンプルで、「とりあえずAppleショートカットでハードルを低くする」です。
+
+*スマホを手に取る。ロックを解除する。アプリを見つける。アイコンをタップして開く。症状を記録するフィールドを探す。記入する。*
+
+正直、眠気に襲われている時にそんな高度な操作ができるほどの意志力なんてありません。だから必要なステップ数を減らそうという作戦です。
+
+意志力のハードルといえば、紙とペンのようなアナログツールも改善策としてよくおすすめされます。あれはどうなのかというと、私も紙のノート派ですが、眠すぎる時にはやはり役立てにくいと感じています。
+*ノートを手に取る。ペンを握る。目的のページを開く。そしてようやく書き込める。*
+半分気を失っているような状態ではなかなかタフな作業です。
+
+それに「特定のデータを抽出して並び替える」といったことはアナログは不得手です。
+
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/analog-sleepiness-tracker_notebook.webp" alt="アナログ睡眠日誌（紙とペン）" />
+*個人的に、ノートの持ち運びやすさと詳細の書き込みやすさを両立するならA6サイズが最強だと思っています。使ううちに書き込むことが増えてしまい、眠気ログ用途には小さすぎるという結論になってしまいましたが。*
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/analog-sleepiness-tracker_printable.webp" alt="アナログ睡眠日誌（印刷用テンプレート）" />
+
+*<a href="/src/images/article/2026_idiopathic-hypersomnia-tracker/sleepiness-tracker_printable.pdf" target="_blank">印刷用テンプレート</a>も作りました。*
+
+そんな状況を踏まえて具体的にどうしたかというと、
+
+*iPhoneを手に取る。左へスワイプしてウィジェットを表示させる。ショートカットをタップする。症状を記入する。*
+
+記入したデータはショートカットからObsidianへ記録されます。この方法なら、ロックを解除する必要もありません。
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/digital-sleepiness-tracker_setup.webp" alt="iOSショートカット × Obsidianでつくるデジタル睡眠日誌" />
+
+### 1. 記録用プラットフォームとしてのObsidian
+
+データの記録場所に選んだObsidianは、Markdown形式のノートアプリです。
+Obsidianを選んだ一番の理由は、Markdownが普遍的なフォーマットだから。将来的に別のシステムを使うことになったとしても、データの移行が比較的簡単だからです。
+
+同期機能も大事なポイントです。スマホはちょっとした作業には便利ですが、全体を見渡すのには画面サイズが小さすぎる・・・といったこともよくあります。
+私はPCでタイピングした方がスマホより100倍速いので、設定系はなるべくデスクトップ版で完結させたいというのもありました。幸い、Obsidianは私が使っているデバイス全てで同期に対応しています。[^4] 
+
+そして元々Obsidianを毎日使っているというのも大きな理由です。いつものアプリというのは体が置き場所や使い方を覚えているものなので、それだけで意志力をセーブしてくれます。どこにデータがあるかを忘れる可能性が低くなるというのは、眠気が強いけれど症状を伝えなければいけないといった状況でかなりの安心材料になります。
+
+あと、個人的にMarkdown好きなのもあります。
+
+### 2. ウィジェット設定
+
+iOSのショートカットアプリから、以下のカテゴリーごとに記録するウィジェットを作成しました。
+
+1. Symptoms（症状）
+	- 日中の眠気度合い
+	- 頭痛の痛さ
+2. Medication（服薬）
+	- 服薬時刻、何の薬を飲んだか、どれくらい飲んだか
+3. Daily Tracker（日々の記録）
+	- 起床時刻
+	- 就寝時刻（布団に入った時間）
+4. 食事内容とタイミング
+5. 筋トレなどの活動時間（何分続けたか）
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/digital-sleepiness-tracker_setup_ios-shortcuts.gif" alt="デジタル睡眠日誌(iOS ショートカット ウィジェット)" />
+
+### 3. グラフ
+
+記入したデータはObsidianの `/Health Log/health-log_YYYY-MM-DD.md` に保存されます。こまめに症状を記録すると、一日の終わりにはこのような日別ログが出来上がります。
+
+``` markdown
+---
+WakeUp: 07:00 // 起床時刻
+BedIn: 22:05 // 就寝時刻
+---
+
+# health-log_YYYY-MM-DD.md
+
+- Time: 07:00, Symptom: Sleepiness, Severity: 8 // 眠気（レベル8）
+- Time: 07:30, Med: IHmed, Severity: 2 // 服薬（過眠症の薬×2錠）
+- Time: 09:00, Symptom: Sleepiness, Severity: 5 
+- Time: 12:00, Meal: Curry and rice // 食事（カレーライス）
+- Time: 12:30, Med: IHmed, Severity: 1 
+- Time: 12:30, Symptom: Sleepiness, Severity: 6
+- Time: 13:00, Caffeine: Coffee, Severity: 1 // カフェイン摂取（コーヒー1杯）
+- Time: 15:00, Symptom: Sleepiness, Severity: 4
+- Time: 16:00, Symptom: Fatigue, Severity: 5 // 疲労（レベル5）
+- Time: 17:00, Symptom: Headache, Severity: 2 // 頭痛（レベル2）
+- Time: 17:20, Med: Painkiller, Severity: 1 // 服薬（頭痛薬×1錠）
+- Time: 20:00, Symptom: Sleepiness, Severity: 6
+- Time: 22:00, Med: InsomniaMed, Severity: 2 // 服薬（不眠症の薬×2mg）
+```
+
+Severityの数字の意味は以下の通りです。
+
+- 特発性過眠症の眠気レベル（1〜10）
+	- 1 = ほとんど全く眠くない
+	- 5 = そこそこ眠いけれど活動に支障はない
+	- 8 = ゾンビのようにフラフラ歩いてしまう眠さ
+	- 10 = 仮眠または二度寝
+- 他項目の数字について
+	- IH med（過眠症の薬）：何錠飲んだか
+	- InsomniaMed（不眠症の薬）：ミリグラム単位
+	- Caffeine（カフェイン摂取）：1杯250ml換算で何杯飲んだか
+
+同じフォルダに、睡眠時間や月経量などをテーブル形式で表示する `Health chart_base.base` と、日々の症状をグラフ化するための `Health chart YYYY-MM.md` を作成し、眠気と各症状や行動の相関を分析していきます。（記事作成時点での最新版コードは後述。）
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/digital-sleepiness-tracker_improvements_dataview.webp" alt="Dataviewテーブル" />
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/digital-sleepiness-tracker_daily-charts.webp" alt=" 日別ログをグラフ表示した図" />
+
+`Health chart YYYY-MM.md` 内のグラフ作成には、<a href="https://community.obsidian.md/plugins/dataview" target="_blank">Dataview</a>と<a href="https://community.obsidian.md/plugins/obsidian-charts" target="_blank">Charts</a>プラグインを使用しました。
+ 
+DataviewはObsidianの中でも特に有名なプラグインで、私もコードの書き方に慣れているので問題なし。
+一方のChartsはというと・・・はっきり言ってカスタマイズの壁が高すぎました。明らかにメモ書き程度の仕様書から何をどうすれば良いかを察せるタイプの上級者向けです。幸い、プラグインのベースになった<a href="https://www.chartjs.org/" target="_blank">Chart.js</a>と日別ログの連携に必須の<a href="https://blacksmithgu.github.io/obsidian-dataview/" target="_blank">Dataview</a>の仕様書が一般人にも優しかったので、こちらを参考にしました。
+
+それでも技術力不足すぎてGoogle検索（AIモード）に頼らざるを得ませんでしたが。しかもAIの回答が間違えだらけという別の問題にも遭遇してしまいます。
+
+というのも、Obsidianに「Charts」と名の付くプラグインが3〜5種ほど（もっとあるかも）存在するせいか、AIモードのGeminiは混同して「このプラグインに（別のプラグイン用の）このコードを埋め込むと良い」のようにアドバイスしてくるわけです。そのプラグイン、そもそもスクリプトに対応してないんですが・・・。
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/google-ai-mode_hallucination.webp" alt="Google AIモード 同名のObsidianプラグインと混同するハルシネーション" />
+
+そんなこんなで修正を重ねた末、最終的には無料版Geminiも十分満足できる仕事をしてくれました。少なくともテスト運用には申し分ありません。
+
+## 2ヶ月半運用してみて
+
+その後2ヶ月半使う中で、システムの細かな設定はもちろん、私自身のQOLも変化しました。
+
+### 普段の使い方
+
+眠気や頭痛を感じた時や症状が消えた時など、気付いたらいつでもロックを解除せずにウィジェットから記録します。お薬を飲む時も同じです。
+
+もちろん予定が詰まっている時や何時間も過集中した日など、時々記録の存在自体を忘れてしまうこともありますが、人間そういうこともあるよねぇと割り切っています。完璧さよりも全体的な継続性が大事だからというのはもちろん、記録し忘れること自体が自己コントロールを失っている（諸々のバランスが崩れている）サインかもしれないからです。
+
+夜になると、寝る前にウィジェットから就寝時刻を記録します。そして翌朝、同じように起床時刻を記録したらObsidianを開き、実際に寝付いた時間、夜中に起きた場合はその時間と理由、そして睡眠時間を手入力します。これをマニュアルで行うのには理由があって、1つは正確性のため、もう1つは意識的に行うことで最近の夕方の過ごし方を振り返られるからです。
+
+### どのように役立っているのか
+
+記録を頑張らなくてもよくなったおかげで、逆にこまめに記録する習慣がつきました。人の多い街中にいる時も、人前で仕事をしている時も（状況次第ですが）、数秒で終わることなのであまり考えずに記録するようになりました。
+
+デジタルグラフのカスタマイズ性も、特定の症状を分析して主治医に伝えるポイントを整理するのに便利です。
+
+### 変更したこと
+
+より自分のニーズにフィットするよう、このような変更を加えました。
+
+読み込みスピード向上のため、グラフから以下のような項目を削除。
+
+- Fatigue（疲労）
+- Meal（食事）
+- Activities（筋トレや集中などの活動関係）
+
+こうすることでグラフ上部のラベルも少なくなり、iPhone12 miniの小さな画面でもすっきり見えるようになりました。
+
+ただ、「グラフから項目を削除した＝記録するのを止めた」というわけではありません。
+例えば食事ですが、実際に眠気への影響が大きかったのは、食べた時間ではなく食事内容の方でした。なのでグラフからは削除しましたが、食後の眠気が慢性化した時に原因を探せるよう、項目自体は残しています。
+
+各項目の色もカテゴリー毎に統一しました。
+
+- 青→特発性過眠症関連：眠気の度合い、布団に入っていた時間、服薬時刻と量
+- 赤→頭痛関連：頭痛の度合い、痛み止めの服用
+- 紫→不眠関連：服薬時刻と量
+
+また、主治医に不眠症状が慢性化しているかもと告げられたので、Dataviewテーブルに夜間の睡眠パターンを把握するための項目を追加しました。 [^5]
+
+- SleepIn（実際に寝付いた時刻：大体の感覚で記録します）
+- Waking up during the night（夜中に起きた時刻と理由：大抵は水分の摂りすぎです・・・）
+- Sleep Hours（睡眠時間：就寝時刻〜起床時刻から夜中に起きていた時間を引いて計算します）
+- Menstruation（月経：出血量をレベル1〜5で記録します）
+- Note（備考）
+
+<img src="/src/images/article/2026_idiopathic-hypersomnia-tracker/digital-sleepiness-tracker_improvements_chart-colors.webp" alt="グラフの色（改善前・改善後）" />
+
+現在の `health-log_YYYY-MM-DD.md` と `Health-chart_YYYY-MM-DD.md` はこのような感じです。
+
+#### `health-log_YYYY-MM-DD.md`
+
+``` markdown
+---
+WakeUp: 07:00 // 起床時刻
+Waking up during the night: 06:00 (micturition desire)
+Sleep Hours: 8.25 // 睡眠時間
+BedIn: 22:00 // 就寝時刻
+SleepIn: 22:03 // 実際に寝付いた時刻
+Menstruation (quantity 1-5): 1 // 月経量
+Note: 日中に歩きすぎた→ほぼ一瞬で寝落ち。
+---
+
+# health-log_YYYY-MM-DD.md
+
+- Time: 07:00, Symptom: Sleepiness, Severity: 8 
+- Time: 07:30, Med: IHmed, Severity: 2 
+- Time: 09:00, Symptom: Sleepiness, Severity: 5
+- Time: 12:00, Meal: Curry and rice
+- Time: 12:30, Med: IHmed, Severity: 1 
+- Time: 12:30, Symptom: Sleepiness, Severity: 6
+- Time: 13:00, Caffeine: Coffee, Severity: 1
+- Time: 15:00, Symptom: Sleepiness, Severity: 4
+- Time: 17:00, Symptom: Headache, Severity: 2
+- Time: 17:20, Med: Painkiller, Severity: 1
+- Time: 20:00, Symptom: Sleepiness, Severity: 6
+- Time: 22:00, Med: InsomniaMed, Severity: 2 
+```
+
+#### `Health-chart_YYYY-MM-DD.md`
+
+``` javascript
+const colorPalette = {
+    Sleepiness: '#3b82f6',
+    SleepBlockFill: 'rgb(59, 130, 246,.1)',
+    IHmed: '#3b82f6',
+    Headache: '#ef4444',
+    Painkiller: '#ef4444',
+    InsomniaMed: '#a855f7',
+};
+
+
+// 1. Fetch all daily logs, sorted chronologically
+const pages = dv.pages('"Health Log"').sort(p => p.file.name, 'asc');
+
+// FILTER: Get only the current month and year
+const targetMonth = "health-log_2026-11"; 
+const monthlyPages = pages.filter(p => p.file.name.startsWith(targetMonth));
+
+// 2. Loop through each individual day found in that month
+for (let i = 0; i < monthlyPages.length; i++) {
+    const page = monthlyPages[i];
+    const dateStr = page.file.name; 
+    
+    // Create a unique dataset container for THIS specific day row
+    let timelineMap = {};
+    let sleepDataCoordinates = [];
+
+    // Calculate historical lookback sleep duration limits safely
+    let BedInTime = null;
+    let wakeUpTime = null;
+
+    if (page.WakeUp) {
+        wakeUpTime = page.WakeUp;
+        BedInTime = page.BedIn;
+    }
+
+    // Map the local sleep boundaries for this specific chart row
+    if (BedInTime) {
+        sleepDataCoordinates.push({ x: "00:00", y: 0 });
+        sleepDataCoordinates.push({ x: BedInTime, y: 0 });
+        sleepDataCoordinates.push({ x: BedInTime, y: 10 });
+        sleepDataCoordinates.push({ x: "24:00", y: 10 });
+    }
+    if (wakeUpTime) {
+        sleepDataCoordinates.push({ x: "00:00", y: 10 });
+        sleepDataCoordinates.push({ x: wakeUpTime, y: 10 });
+        sleepDataCoordinates.push({ x: wakeUpTime, y: 0 });
+        sleepDataCoordinates.push({ x: "24:00", y: 0 });
+    }
+
+    // Process bullet points belonging strictly to this day's file
+    let dayHasData = false;
+    for (let item of page.file.lists) {
+        const text = item.text;
+        const timeMatch = text.match(/Time:\s*(\d{2}:\d{2})/);
+        const severityMatch = text.match(/Severity:\s*(\d+)/);
+        
+        if (timeMatch && severityMatch) {
+            const timeStr = timeMatch[1];
+            const severityVal = parseInt(severityMatch[1], 10);
+            dayHasData = true;
+
+            if (!timelineMap[timeStr]) {
+                timelineMap[timeStr] = { 
+                    Sleepiness: null, 
+                    Headache: null, 
+                    // Fatigue: null, 
+                    IHmed: null, 
+                    InsomniaMed: null, 
+                    Contraceptive: null, 
+                    Painkiller: null };
+            }
+            
+            if (text.includes("Symptom: Sleepiness")) {
+                timelineMap[timeStr].Sleepiness = severityVal;
+            } else if (text.includes("Symptom: Headache")) {
+                timelineMap[timeStr].Headache = severityVal;
+            } else if (text.includes("Med: IHmed")) {
+                timelineMap[timeStr].IHmed = severityVal;
+            } else if (text.includes("Med: InsomniaMed")) {
+                timelineMap[timeStr].InsomniaMed = severityVal;
+            } else if (text.includes("Med: Painkiller")) {
+                timelineMap[timeStr].Painkiller = severityVal;
+            }
+        }
+    }
+
+    // Skip rendering entirely if the day has no symptom entries and no sleep data
+    if (!dayHasData && sleepDataCoordinates.length === 0) continue;
+
+    // 3. Extract and sort map entries for this specific line block
+    const sortedTimes = Object.keys(timelineMap).sort();
+    const SleepinessData = sortedTimes.map(t => timelineMap[t].Sleepiness);
+    const HeadacheData = sortedTimes.map(t => timelineMap[t].Headache);
+    const IHmedData = sortedTimes.map(t => timelineMap[t].IHmed);
+    const InsomniaMedData = sortedTimes.map(t => timelineMap[t].InsomniaMed);
+    const PainkillerData = sortedTimes.map(t => timelineMap[t].Painkiller);
+    sleepDataCoordinates.sort((a, b) => a.x.localeCompare(b.x));
+
+    // 4. Output a clean Markdown header split for this row item
+    this.container.createEl("h3", { text: `📅 Health Log: ${dateStr}` });
+
+    // Create a unique wrapper element for this specific canvas instance
+    const chartContainer = this.container.createEl("div");
+
+    // 5. Render individual chart row onto the newly generated container element
+    const chartData = {
+        type: 'line',
+        backgroundOpacity: 0.1,
+        borderWidth: 2,
+        data: {
+            labels: sortedTimes,
+            datasets: [
+                {
+                    label: 'Sleepiness',
+                    data: SleepinessData,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.Sleepiness,
+                    backgroundColor: colorPalette.Sleepiness,
+                    tension: 0.2,
+                    spanGaps: true
+                },
+                {
+                    label: 'Headache',
+                    data: HeadacheData,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.Headache,
+                    backgroundColor: colorPalette.Headache,
+                    tension: 0.2,
+                    spanGaps: true
+                },
+                {
+                    type: 'bar',
+                    label: 'IHmed',
+                    data: IHmedData,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.IHmed,
+                    backgroundColor: colorPalette.IHmed,
+                    spanGaps: true
+                },
+                {
+                    type: 'bar',
+                    label: 'InsomniaMed',
+                    data: InsomniaMedData,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.InsomniaMed,
+                    backgroundColor: colorPalette.InsomniaMed,
+                    spanGaps: true
+                },
+                {
+                    type: 'bar',
+                    label: 'Painkiller',
+                    data: PainkillerData,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.Painkiller,
+                    backgroundColor: colorPalette.Painkiller,
+                    spanGaps: true
+                },
+                {
+                    label: 'Sleep Block',
+                    data: sleepDataCoordinates,
+                    yAxisID: 'ySym',
+                    borderColor: colorPalette.Sleepiness,
+                    backgroundColor: colorPalette.SleepBlockFill,
+                    borderWidth: 1,
+                    fill: true,
+                    pointRadius: 0
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                ySym: {
+                    type: 'linear',
+                    position: 'left',
+                    title: { display: true, text: 'Level/Amount' },
+                    min: 0,
+                    max: 10
+                },
+                x: {
+                    type: 'time',
+                    time: {
+                        parser: 'HH:mm',
+                        unit: 'hour',
+                        displayFormats: { hour: 'HH' }
+                    },
+                    min: '00:00',
+                    max: '24:00'
+                }
+            }
+        }
+    };
+
+    window.renderChart(chartData, chartContainer);
+}
+```
+
+### 今後変えたい・変えるかもしれないこと
+
+少しばかばかしいかもですが、最近、数日ごとに平均睡眠時間を手動で割り出している自分に気づきました。理想の睡眠時間を知りたかっただけなのですが、そんな頻繁にやるならDataviewに自動計算させるかスプレッドシートと連携させればよいのではないかと考え中です。
+
+## 終わりに（UX・機能・デザインの優先順位について）
+
+記録を始めてからというもの、私の睡眠衛生は大きく改善しました。まともに活動するため最低7.5時間の睡眠が必要で、できれば8時間は欲しいことがわかり、1週間ほど睡眠時間を確保し続けると日中の眠気も軽減しました。もちろん過眠症の薬が切れれば眠くなることに変わりはありませんし、夜の寝つきもまだまだ不安定ですが。それでも、たとえ5時間しか眠れなかったとしても以前のようなとてつもない疲労は感じません。
+
+また女性特有の話ですが、女性ホルモンの変化と過眠症の眠気の関係にも気づけました。今までは特別眠い日があってもパターンが掴めず関係ないと思っていたのですが、睡眠を安定させると確かに生理前に眠気が強くなるのがわかりました。この何が良いかというと、いつ予定を詰め込んではいけないか、体調面を優先にゆっくり過ごすべきかを予測しやすくなるのです。
+
+### なぜ既存のアプリを使わないのか
+
+そういえばそもそもなぜDIYに走ったのかというと、理由はシンプルで「私のニーズがニッチすぎるから」です。
+「日中の」眠気を扱ったアプリなど見つからず、Appleのヘルスケアアプリにさえもそのような項目はありませんでした。
+
+---
+
+[^1]: 日本の有病率は10万人あたり7.7人（0.0077％）、海外でも10万人あたり7.8～14.6人と報告されています。
+	出典： <a href="https://www.takeda.co.jp/patients/nemukenavi/about/about-hypersomnia/about-idiopathic-hypersomnia/" target="_blank">イラストでわかる特発性過眠症</a>
+
+[^2]: ちなみに英語圏の自己啓発系YouTuberの間で「**超**集中（Hyperfocus）で人生を変える」がトレンドになっていますが、本来の「**過**集中（Hyperfocus）」が持つ短所を無視して美化しているのがよろしくないなと。これは諸刃の剣なんだよ。単なる深い集中ではなく、中毒性がある点ではブレインロットと同じだよ・・・と、過集中に悩む当事者は思います。
+
+[^3]: この症状は「<a href="https://e-nemuri.eisai.jp/glossary/sa/sleep-drunkenness.html" target="_blank">睡眠酩酊</a>」と呼ばれています。
+
+[^4]: 今はMacとWindowsでは<a href="https://syncthing.net/" target="_blank">Syncthing</a>、iOSでは<a href="https://apps.apple.com/jp/app/synctrain/id6553985316" target="_blank">Synctrain</a>で同期していますが、以前使っていた公式の<a href="https://obsidian.md/sync" target="_blank">Obsidian Sync</a>も信頼性が非常に高く良かったです。
+
+[^5]: 過眠と不眠が同時に起こるなんて妙な話ですし、それが<a href="https://sunao.clinic/qa/archives/784" target="_blank">MSLTの平均睡眠潜時</a>が1.5分だった人間に起こっているとなると更に意味不明ですが（※診断基準は8分以下）、実はこのタイプの不眠は<a href="https://sleep1.jp/asd_sleep/" target="_blank">ASDあるある</a>のようです。脳の他の部分はシャットダウン準備完了なのに、一部分だけ過活動状態で落ち着かないという。深い集中から抜け出すのに外からの力が必要なのと同じ理屈のようです。
