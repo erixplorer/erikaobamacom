@@ -5,7 +5,7 @@ import WorkTypes from "../components/parts/about/WorkTypes.astro";
 import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content';
 import PostListHorizontal from '../components/collections/PostListHorizontal.astro';
-import contactURL from '../components/navigation/contactBusinessEn.txt?raw';
+import contactURL from '../components/navigation/contact.txt?raw';
 
 const pageTitle = "About";
 
@@ -82,7 +82,7 @@ const portfolioPosts = (await getCollection('portfolio'))
         <li>For Japanese residents, the tax-in price (with 10% of consumption tax) will apply.<br/>(Reference: <a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6567.htm" target="_blank">No.6567 Provision of services to non-residents &mdash; National Tax Agency (Japanese)</a>)</li>
       </ul>
       
-      <p class="text-center"><a href={contactURL} target="_blank" class="button bg-ac1 col-bg4">ask for details</a>
+      <p class="text-center"><a href={contactURL} class="button bg-ac1 col-bg4">ask for details</a>
       <span class="caption text-center">
         or <a href="/workflow/" class="alink caption">check the workflow</a>
       </span>

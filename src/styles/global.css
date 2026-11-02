@@ -212,8 +212,8 @@ html {
   color: var(--text);
   line-height: var(--line-base);
   overflow-wrap: anywhere;
-  word-break: keep-all;
-  line-break: strict;
+  /* word-break: keep-all;
+  line-break: strict; */
 }
 
 a {

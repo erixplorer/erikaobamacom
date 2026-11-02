@@ -1,8 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components'
 import ColorScheme from '../parts/ColorScheme.astro';
-import contactGeneralEn from './contactGeneralEn.txt?raw';
-import contactGeneralJa from './contactGeneralJa.txt?raw';
+import contactURL from './contact.txt?raw';
 const pathName = Astro.url.pathname.replace(`/ja/`, '/');
 ---
 
@@ -10,7 +9,7 @@ const pathName = Astro.url.pathname.replace(`/ja/`, '/');
     <a href={ Astro.currentLocale === "ja" ? `/ja/about/` : `/about`}>About</a>
     <a href={ Astro.currentLocale === "ja" ? `/ja/article/` : `/article`}>Article</a>
     <a href={ Astro.currentLocale === "ja" ? `/ja/portfolio/` : `/portfolio`}>Portfolio</a>
-    <a href={ Astro.currentLocale === "ja" ? `${contactGeneralJa}` : `${contactGeneralEn}`} target="_blank">Contact</a>
+    <a href={contactURL}>Contact</a>
     
     <a href={ Astro.currentLocale === "ja" ? `/ja/search/` : `/search/` } class="nav-mobile font-sm">Search</a>
     

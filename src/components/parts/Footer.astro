@@ -1,8 +1,5 @@
 ---
-import contactGeneralEn from '../navigation/contactGeneralEn.txt?raw';
-import contactGeneralJa from '../navigation/contactGeneralJa.txt?raw';
-import contactBusinessEn from '../navigation/contactBusinessEn.txt?raw';
-import contactBusinessJa from '../navigation/contactBusinessJa.txt?raw';
+import contact from '../navigation/contact.txt?raw';
 import socialYouTube from '../navigation/socialYouTube.txt?raw';
 import socialFigma from '../navigation/socialFigma.txt?raw';
 import socialGitHub from '../navigation/socialGitHub.txt?raw';
@@ -24,20 +21,15 @@ import socialGitHub from '../navigation/socialGitHub.txt?raw';
     
     <ul>Contact
       <li>{ Astro.currentLocale === "ja" ? 
-       <a href={contactGeneralJa} target="_blank">メールフォーム</a>
+       <a href={contact}>メール</a>
        : 
-       <a href={contactGeneralEn} target="_blank">General message</a>
-       }</li>
-      <li>{ Astro.currentLocale === "ja" ? 
-       <a href={contactBusinessJa} target="_blank">ご依頼用フォーム</a>
-       : 
-       <a href={contactBusinessEn} target="_blank">Business inquiry</a>
+       <a href={contact}>Email</a>
        }</li>
     </ul>
 
     <ul>Social
       <li><a href={socialYouTube} target="_blank">YouTube</a></li>
-      <!-- <li><a href={socialFigma} target="_blank">Figma</a></li> -->
+      <li><a href={socialFigma} target="_blank">Figma</a></li>
       <li><a href={socialGitHub} target="_blank">GitHub</a></li>
     </ul>
 

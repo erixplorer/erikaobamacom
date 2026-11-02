@@ -5,7 +5,7 @@ import WorkTypes from "../../components/parts/about/WorkTypes.astro";
 import { Icon } from 'astro-icon/components'
 import { getCollection } from 'astro:content';
 import PostListHorizontal from '../../components/collections/PostListHorizontal.astro';
-import contactURL from '../../components/navigation/contactBusinessJa.txt?raw';
+import contactURL from '../../components/navigation/contact.txt?raw';
 
 
 const pageTitle = "About";
@@ -83,7 +83,7 @@ const portfolioPosts = (await getCollection('portfolioJa'))
         <li>ご依頼主が日本国外居住の場合、税抜価格が適用されます。<br/>（参考：<a href="https://www.nta.go.jp/taxes/shiraberu/taxanswer/shohi/6567.htm" target="_blank">No.6567 非居住者に対する役務の提供（国税庁）</a>）</li>
       </ul>
       
-      <p class="text-center"><a href={contactURL} target="_blank" class="button bg-ac1 col-bg4">お問い合わせ</a>
+      <p class="text-center"><a href={contactURL} class="button bg-ac1 col-bg4">お問い合わせ</a>
       <span class="caption text-center">
         制作フローは<a href="/ja/workflow/" class="alink caption">こちら</a>よりご確認いただけます
       </span>
